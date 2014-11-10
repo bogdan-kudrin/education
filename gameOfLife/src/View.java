@@ -43,8 +43,13 @@ class View extends JFrame {
             addMouseListener(this);
         }
 
-        public void paint(Graphics g) {
+        public void setModel(Model model) {
+            panelWidth = model.width * model.cellSize + 100;
+            panelHeight = model.height * model.cellSize + 100;
+            this.model = model;
+        }
 
+        public void paint(Graphics g) {
             g.setColor(Color.black);
             for (int i = 0; i < model.width + 1; i++) {
                 g.drawLine(model.cellSize * i + 50, 50, model.cellSize * i + 50, model.cellSize * model.height + 50);

@@ -1,5 +1,6 @@
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -52,7 +53,9 @@ class Controller {
                 );
             }catch (NumberFormatException e1) {return;}
 
-            draw.bigpanel.model=new Model(width,height);
+            draw.bigpanel.setModel(new Model(width,height));
+            draw.bigpanel.setPreferredSize(new Dimension(draw.bigpanel.panelWidth, draw.bigpanel.panelHeight));
+            draw.pack();
             draw.repaint();
         }
     };
