@@ -1,4 +1,3 @@
-package com.company;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,14 +5,15 @@ import java.awt.event.ActionListener;
 /**
  * Created by Паша on 10.11.2014.
  */
-class Controller{
+class Controller {
     Timer timer;
-    Draw d = new Draw("Жизнь");
+    //Избегайте имен в один символ
+    View draw = new View("Жизнь");
     ActionListener timerListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            d.bigpanel.m.do_iteration();
-            d.repaint();
+            draw.bigpanel.model.doIteration();
+            draw.repaint();
         }
 
     };
@@ -21,22 +21,23 @@ class Controller{
         @Override
         public void actionPerformed(ActionEvent e) {
             timer.stop();
-            d.littlepanel.start.setEnabled(true);
-            d.bigpanel.pause=true;
+            draw.littlePanel.start.setEnabled(true);
+            draw.bigpanel.pause = true;
         }
     };
     ActionListener startListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             timer.restart();
-            d.littlepanel.start.setEnabled(false);
-            d.bigpanel.pause=false;
+            draw.littlePanel.start.setEnabled(false);
+            draw.bigpanel.pause = false;
         }
     };
-    Controller(){
-        timer= new Timer(1000, timerListener);
-        d.littlepanel.stop.addActionListener(stopListener);
-        d.littlepanel.start.addActionListener(startListener);
+
+    Controller() {
+        timer = new Timer(1000, timerListener);
+        draw.littlePanel.stop.addActionListener(stopListener);
+        draw.littlePanel.start.addActionListener(startListener);
         timer.start();
         timer.stop();
     }
