@@ -13,12 +13,14 @@ class View extends JFrame {
     //Имена переменных пишут camelCase'ом
     LittlePanel littlePanel = new LittlePanel(bigpanel.panelWidth);
 
+    NorthPanel northPanel = new NorthPanel(bigpanel.panelWidth);
     View(String s) {
         super(s);
-        setSize(bigpanel.panelWidth, bigpanel.panelHeight + 50);
+        setSize(bigpanel.panelWidth, bigpanel.panelHeight + 100);
         setLayout(new BorderLayout());
         this.add(bigpanel, BorderLayout.CENTER);
         this.add(littlePanel, BorderLayout.SOUTH);
+        this.add(northPanel, BorderLayout.NORTH);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
@@ -28,7 +30,7 @@ class View extends JFrame {
     }
 
     class BigPanel extends JPanel implements MouseListener {
-        Model model = new Model();
+        Model model = new Model(10,10);
         boolean pause = true;
         int panelWidth;
         int panelHeight;
@@ -98,4 +100,20 @@ class View extends JFrame {
             add(stop);
         }
     }
+    class NorthPanel extends JPanel{
+        JLabel x=new JLabel();
+        JTextField width=new JTextField(3);
+        JTextField height=new JTextField(3);
+        JButton newField = new JButton("Новое поле");
+        NorthPanel(int w){
+            super();
+            setSize(w, 50);
+            x.setText("X");
+            add(width);
+            add(x);
+            add(height);
+            add(newField);
+        }
+    }
 }
+

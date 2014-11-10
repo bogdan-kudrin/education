@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,10 +35,33 @@ class Controller {
         }
     };
 
-    Controller() {
-        timer = new Timer(1000, timerListener);
+    ActionListener newFieldListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int width=0,height=0;
+
+            try {
+                width = Integer.valueOf(
+                        draw.northPanel.width.getText()
+                );
+            }catch (NumberFormatException e1) {return;}
+
+            try {
+                height = Integer.valueOf(
+                        draw.northPanel.height.getText()
+                );
+            }catch (NumberFormatException e1) {return;}
+
+            draw.bigpanel.model=new Model(width,height);
+            draw.repaint();
+        }
+    };
+    Controller(){
+        timer= new Timer(1000, timerListener);
         draw.littlePanel.stop.addActionListener(stopListener);
         draw.littlePanel.start.addActionListener(startListener);
+        draw.northPanel.newField.addActionListener(newFieldListener);
+
         timer.start();
         timer.stop();
     }

@@ -1,17 +1,22 @@
-/**
- * Created by Паша on 10.11.2014.
- */
-class Model {
-    int width = 10;
-    int height = 10;
-    int cellSize = 50;
-    //Так по-моему все-таки правильнее, хоть на занятии я сам так и написал изначально model
-    boolean field[][] = new boolean[height][width];
 
-    Model() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++)
-                field[i][j] = false;
+//**
+//* Created by Паша on 10.11.2014.
+  //      */
+class Model {
+    int width ;
+    int height;
+    int cellSize;
+    //Так по-моему все-таки правильнее, хоть на занятии я сам так и написал изначально model
+    boolean field[][];
+
+    Model(int w, int h){
+        width=w;
+        height=h;
+        cellSize=(w>h) ? 600/w : 600/h;
+        field= new boolean[height][width];
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++)
+                field[i][j]=false;
         }
 
     }
