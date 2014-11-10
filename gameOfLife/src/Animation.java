@@ -14,7 +14,7 @@ public class Animation extends JLabel implements ActionListener {
         this.setBackground(Color.WHITE);
 
         game = new Field();
-        timer = new Timer(20, this);
+        timer = new Timer(40, this);
         timer.setInitialDelay(40);
         timer.start();
     }
@@ -27,9 +27,9 @@ public class Animation extends JLabel implements ActionListener {
     }
 
     public void setFPS(int fps) {
-        if (fps>50) timer.setDelay(20);
+        if (fps>25) timer.setDelay(40);
         else timer.setDelay(1000/fps);
-        speedUp=fps/50;
+        speedUp=fps/25;
         timer.restart();
     }
 
@@ -41,6 +41,8 @@ public class Animation extends JLabel implements ActionListener {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Dimension d = getSize();
+        
+        g2.clearRect(0,  0,  d.width, d.height);
 
         double w = width, h = height, grid_x = d.width / w, grid_y = d.height / h;
 

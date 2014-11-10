@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -40,6 +39,9 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         GameOfLifeField.setFPS((int)Math.sqrt(1<<10));
         framesPerSecond.addChangeListener(this);
         framesPerSecond.setMajorTickSpacing(5);
+        framesPerSecond.setPreferredSize(new Dimension(50, 200));
+        framesPerSecond.setMinimumSize(new Dimension(50, 200));
+        framesPerSecond.setMaximumSize(new Dimension(50, 200));
         framesPerSecond.setMinorTickSpacing(1);
         framesPerSecond.setPaintTicks(true);
         framesPerSecond.setPaintLabels(true);
@@ -49,6 +51,9 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         fieldWidth.addChangeListener(this);
         fieldWidth.setMajorTickSpacing(20);
         fieldWidth.setMinorTickSpacing(5);
+        fieldWidth.setPreferredSize(new Dimension(50, 200));
+        fieldWidth.setMinimumSize(new Dimension(50, 200));
+        fieldWidth.setMaximumSize(new Dimension(50, 200));
         fieldWidth.setPaintTicks(true);
         fieldWidth.setPaintLabels(true);
         right.add(fieldWidth);
