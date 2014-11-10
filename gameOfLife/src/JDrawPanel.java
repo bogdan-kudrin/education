@@ -47,7 +47,7 @@ public class JDrawPanel extends JPanel {
     }
 
     public void changeCellValue(int x, int y) {
-        one.сhangeCellValue(x, y);
+        one.changeCellValue(x, y);
         repaint();
     }
 

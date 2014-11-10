@@ -1,20 +1,20 @@
 /**
  * Created by Admin on 22.09.2014.
  */
-public class Iiteration
+public class Iteration
 {
     private Table model;
 
-    public Iiteration() {
+    public Iteration() {
         model = new Table();
     }
 
-    public Iiteration(int size)
+    public Iteration(int size)
     {
         model = new Table(size);
     }
 
-    public Iiteration(int size, boolean[][] ar)
+    public Iteration(int size, boolean[][] ar)
     {
         model = new Table(size, ar) ;
     }
@@ -29,12 +29,12 @@ public class Iiteration
         }
     }
 
-    public void ChangeZnach(int i, int k){
-        model.setZnach(i,k,!model.getOne(i,k));
+    public void changeCellValue(int i, int k){
+        model.setCellValue(i, k, !model.getOne(i, k));
     }
 
 
-    public void Done()
+    public void done()
    {
         Table tmp = new Table(model.getSize(),model.getTable());
         int n = tmp.getSize();
@@ -44,8 +44,8 @@ public class Iiteration
               int k = 0;
               for (int l = 1; l <= 8; l++)
               if (tmp.getNeighbour(i,j,l)) k++;
-              if ( (k < 2) || (k > 3) ) model.setZnach(i,j,false);
-              else if (k == 3) model.setZnach(i,j,true);
+              if ( (k < 2) || (k > 3) ) model.setCellValue(i,j,false);
+              else if (k == 3) model.setCellValue(i,j,true);
           }
 
     }
@@ -54,7 +54,7 @@ public class Iiteration
         return model.getSize();
     }
 
-    public boolean getZnach (int i, int j){
+    public boolean getCellValue (int i, int j){
         return model.getOne(i, j);
     }
 
