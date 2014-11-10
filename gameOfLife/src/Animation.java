@@ -34,12 +34,9 @@ public class Animation extends JLabel implements ActionListener {
     }
 
     public void setFPS(int fps) {
-        //Всегда фигурные скобки в if
-        if (fps > 25) {
-            timer.setDelay(40);
-        } else {
-            timer.setDelay(1000 / fps);
-        }
+        //Всегда фигурные скобки в if/else
+        //Или можно использовать тернарный оператор
+        timer.setDelay(fps > 25 ? 40 : 1000 / fps);
         speedUp = fps / 25;
         timer.restart();
     }
@@ -49,11 +46,11 @@ public class Animation extends JLabel implements ActionListener {
     }
 
     public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        Graphics2D graphics = (Graphics2D) g;
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Dimension d = getSize();
 
-        g2.clearRect(0, 0, d.width, d.height);
+        graphics.clearRect(0, 0, d.width, d.height);
 
         double w = width, h = height, grid_x = d.width / w, grid_y = d.height / h;
 
@@ -61,18 +58,18 @@ public class Animation extends JLabel implements ActionListener {
             for (int j = 0; j < w; j++) {
                 //Можно просто так, сравнение с true избыточно
                 if (game.f[i][j]) {
-                    g2.setPaint(gr);
-                    g2.fill(new Ellipse2D.Double(grid_x * (j + 0.1), grid_y * (i + 0.1), grid_x * 0.8, grid_y * 0.8));
+                    graphics.setPaint(gr);
+                    graphics.fill(new Ellipse2D.Double(grid_x * (j + 0.1), grid_y * (i + 0.1), grid_x * 0.8, grid_y * 0.8));
                 }
             }
         }
-        g2.setPaint(new Color(128, 128, 128));
+        graphics.setPaint(new Color(128, 128, 128));
         if (grid_x > 5 && grid_y > 5) {
             for (int i = 1; i < w; i++) {
-                g2.draw(new Line2D.Double(i * grid_x, 0, i * grid_x, d.height));
+                graphics.draw(new Line2D.Double(i * grid_x, 0, i * grid_x, d.height));
             }
             for (int i = 1; i < h; i++) {
-                g2.draw(new Line2D.Double(0, i * grid_y, d.width, i * grid_y));
+                graphics.draw(new Line2D.Double(0, i * grid_y, d.width, i * grid_y));
             }
         }
     }
