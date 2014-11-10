@@ -2,7 +2,7 @@
  * Created by Admin on 22.09.2014.
 **/
 import java.util.Scanner;
-public class game {
+public class Ggame {
     public static void main(String[] args) throws Throwable
     {
         try {

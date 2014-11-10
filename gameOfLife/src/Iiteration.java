@@ -1,20 +1,20 @@
 /**
  * Created by Admin on 22.09.2014.
  */
-public class iteration
+public class Iiteration
 {
     private Table model;
 
-    public iteration () {
+    public Iiteration() {
         model = new Table();
     }
 
-    public iteration (int size)
+    public Iiteration(int size)
     {
         model = new Table(size);
     }
 
-    public iteration (int size, boolean [][]ar)
+    public Iiteration(int size, boolean[][] ar)
     {
         model = new Table(size, ar) ;
     }
