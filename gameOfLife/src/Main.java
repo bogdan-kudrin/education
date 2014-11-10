@@ -4,22 +4,25 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class Main extends JPanel implements ActionListener, ChangeListener {
-    Animation GameOfLifeField;
+    // Названия полей в классе всегда с маленькой буквы
+    Animation gameOfLifeField;
     JButton button;
-    JSlider fieldWidth, framesPerSecond;
+    JSlider fieldWidth;
+    JSlider framesPerSecond;
 
     public Main() {
         setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        // Избегайте, пожалуйста идентификаторов в один символ
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
         setBackground(Color.WHITE);
 
-        GameOfLifeField = new Animation();
-        GameOfLifeField.setPreferredSize(new Dimension(900, 750));
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx=1;
-        c.weighty=1;
-        add(GameOfLifeField, c);
-        GameOfLifeField.setOpaque(true);
+        gameOfLifeField = new Animation();
+        gameOfLifeField.setPreferredSize(new Dimension(900, 750));
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 1;
+        add(gameOfLifeField, gridBagConstraints);
+        gameOfLifeField.setOpaque(true);
 
         JPanel right = new JPanel();
         right.setLayout(new BoxLayout(right, BoxLayout.PAGE_AXIS));
@@ -28,15 +31,15 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         button.addActionListener(this);
         right.setBackground(Color.WHITE);
         right.add(button);
-        c.gridx = 1;
-        c.weightx=0;
-        c.weighty=0;
-        c.fill=GridBagConstraints.NONE;
-        c.anchor=GridBagConstraints.NORTH;
-        add(right, c);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.weightx = 0;
+        gridBagConstraints.weighty = 0;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.anchor = GridBagConstraints.NORTH;
+        add(right, gridBagConstraints);
 
         framesPerSecond = new JSlider(JSlider.VERTICAL, 0, 20, 10);
-        GameOfLifeField.setFPS((int)Math.sqrt(1<<10));
+        gameOfLifeField.setFPS((int) Math.sqrt(1 << 10));
         framesPerSecond.addChangeListener(this);
         framesPerSecond.setMajorTickSpacing(5);
         framesPerSecond.setPreferredSize(new Dimension(50, 200));
@@ -57,14 +60,14 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         fieldWidth.setPaintTicks(true);
         fieldWidth.setPaintLabels(true);
         right.add(fieldWidth);
-        GameOfLifeField.setWidth(50);
+        gameOfLifeField.setWidth(50);
     }
 
 
     public void actionPerformed(ActionEvent e) {
         if ("stop_start".equals(e.getActionCommand())) {
-            GameOfLifeField.stopped^=true;
-            button.setText(GameOfLifeField.stopped ? "Start" : "Stop");
+            gameOfLifeField.stopped ^= true;
+            button.setText(gameOfLifeField.stopped ? "Start" : "Stop");
         }
     }
 
@@ -73,24 +76,25 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         if (!source.getValueIsAdjusting()) {
             if (source.equals(framesPerSecond)) {
                 int fps = source.getValue();
-                GameOfLifeField.setFPS((int) Math.sqrt(1 << fps));
+                gameOfLifeField.setFPS((int) Math.sqrt(1 << fps));
             } else if (source.equals(fieldWidth)) {
                 int width = source.getValue();
-                GameOfLifeField.setWidth(width);
+                gameOfLifeField.setWidth(width);
             }
         }
     }
 
 
     public static void main(String s[]) {
-        JFrame f = new JFrame();
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setContentPane(new Main());
-        f.setTitle("Conway's Game of Life");
-        f.setBackground(Color.WHITE);
-        f.setForeground(Color.WHITE);
-        f.pack();
+        JFrame frame = new JFrame();
+        // С JFrame среда разработки ругается
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setContentPane(new Main());
+        frame.setTitle("Conway's Game of Life");
+        frame.setBackground(Color.WHITE);
+        frame.setForeground(Color.WHITE);
+        frame.pack();
 
-        f.setVisible(true);
+        frame.setVisible(true);
     }
 }
