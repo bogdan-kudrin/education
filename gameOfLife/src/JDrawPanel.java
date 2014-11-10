@@ -15,11 +15,8 @@ public class JDrawPanel extends JPanel {
     JButton stepButton = new JButton("Шаг");
     JButton startButton = new JButton("Начать игру");
 
-
-    //конструктор панели
     public JDrawPanel(int size) {
 
-        //говорим, что будем задавать координаты кнопок вручную
         setLayout(null);
         one = new Iteration(size);
 
@@ -28,9 +25,8 @@ public class JDrawPanel extends JPanel {
         stepButton.setBounds(110, 5, 80, 20);
         add(stepButton);
         add(startButton);
-        stepButton.setVisible(false);//кнопка "Шаг" появится только после задания живых клеток
+        stepButton.setVisible(false);
 
-        //создаем обработчик нажатия на кнопки
         stepButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -50,9 +46,8 @@ public class JDrawPanel extends JPanel {
         });
     }
 
-    //меняем значение клетки
-    public void ChangeZnach(int x, int y) {
-        one.сhangeZnach(x, y);
+    public void changeCellValue(int x, int y) {
+        one.сhangeCellValue(x, y);
         repaint();
     }
 
@@ -80,7 +75,7 @@ public class JDrawPanel extends JPanel {
 
         for (int i = 0; i < one.size(); i++) {
             for (int j = 0; j < one.size(); j++) {
-                if (one.getZnach(i, j)) {
+                if (one.getCellValue(i, j)) {
                     g2.fillRect(j * Wd + Wd / 5, i * Hg + Hg / 5, Wd - Wd / 5 * 2, Hg - Hg / 5 * 2);
                 }
             }

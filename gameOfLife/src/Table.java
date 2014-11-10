@@ -33,8 +33,7 @@ public class Table {
         }
     }
 
-    //Что такое Znach если знак - то лучше Sign
-    public void setZnach(int k, int l, boolean f) {
+    public void setCellValue(int k, int l, boolean f) {
         if ((k >= 0) && (l >= 0) && (k < size) && (l < size))
             table[k][l] = f;
     }
