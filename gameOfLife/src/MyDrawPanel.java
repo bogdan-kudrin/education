@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class MyDrawPanel extends JPanel { 
 
 boolean[][] drw;
-int sizeX=20,sizeY=20,num;
+int sizeX,sizeY,num;
 
 public void paintComponent(Graphics g) {
 g.setColor(Color.BLACK);

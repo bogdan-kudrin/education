@@ -109,6 +109,8 @@ public class window extends JFrame {
 	    DrawPanel.drw=new boolean[size][size];
 	    DrawPanel.num=size;
 	    DrawPanel.drw=board.matrix;
+	    DrawPanel.sizeX=900/size;
+	    DrawPanel.sizeY=900/size;
 	    frame.repaint();
   }
   private void initListeners() {
