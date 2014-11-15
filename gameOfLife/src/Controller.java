@@ -1,38 +1,42 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Паша on 10.11.2014.
+ * Created by Паша on 14.11.2014.
  */
-class Controller {
+public class Controller {
+
     Timer timer;
-    //Избегайте имен в один символ
-    View draw = new View("Жизнь");
+    View view;
+    Model model=new Model(10,10);
+
+    int panelWidth;
+    int panelHeight;
+    int cellSize;
+
+
     ActionListener timerListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            draw.bigpanel.model.doIteration();
-            draw.repaint();
+            model.doIteration();
+            view.repaint();
         }
 
     };
     ActionListener stopListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            timer.stop();
-            draw.littlePanel.start.setEnabled(true);
-            draw.bigpanel.pause = true;
+           pause();
         }
     };
     ActionListener startListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             timer.restart();
-            draw.littlePanel.start.setEnabled(false);
-            draw.bigpanel.pause = false;
+            view.littlePanel.start.setEnabled(false);
+            view.bigPanel.pause = false;
         }
     };
 
@@ -43,29 +47,86 @@ class Controller {
 
             try {
                 width = Integer.valueOf(
-                        draw.northPanel.width.getText()
+                        view.northPanel.width.getText()
                 );
             }catch (NumberFormatException e1) {return;}
 
             try {
                 height = Integer.valueOf(
-                        draw.northPanel.height.getText()
+                        view.northPanel.height.getText()
                 );
             }catch (NumberFormatException e1) {return;}
 
-            draw.bigpanel.setModel(new Model(width,height));
-            draw.bigpanel.setPreferredSize(new Dimension(draw.bigpanel.panelWidth, draw.bigpanel.panelHeight));
-            draw.pack();
-            draw.repaint();
+            pause();
+
+            model=new Model(width,height);
+            setModel();
+            view.bigPanel.setModel(model);
+
+            view.bigPanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
+            view.pack();
+            view.repaint();
         }
     };
-    Controller(){
+
+
+    Controller(View view){
+        this.view=view;
+         setModel();
+    }
+
+    public void prepareForWork(){
         timer= new Timer(1000, timerListener);
-        draw.littlePanel.stop.addActionListener(stopListener);
-        draw.littlePanel.start.addActionListener(startListener);
-        draw.northPanel.newField.addActionListener(newFieldListener);
+        view.littlePanel.stop.addActionListener(stopListener);
+        view.littlePanel.start.addActionListener(startListener);
+        view.northPanel.newField.addActionListener(newFieldListener);
 
         timer.start();
         timer.stop();
     }
+    public Model getModel()
+    {return model;}
+
+    public void setModel() {
+       setPanelHeight(model.getHeight() * model.getCellSize() + 100);
+       setPanelWidth(model.getWidth() * model.getCellSize() + 100);
+       setCellSize(model.getCellSize());
+    }
+
+    public void setCellSize(int cellSize)
+    { this.cellSize = cellSize;}
+
+    public void setPanelHeight(int panelHeight)
+    {this.panelHeight = panelHeight;}
+
+    public void setPanelWidth(int panelWidth)
+    {this.panelWidth = panelWidth;}
+
+
+    public int getPanelWidth()
+    {return panelWidth;}
+
+    public int getPanelHeight()
+    {return panelHeight;}
+
+
+    public void findAndChangeCell(int x,int y){
+        if (x > 50 & x < panelWidth - 50 & y > 50 & y < panelHeight - 50) {
+            int j = (x - 50) / cellSize;
+            int i = (y - 50) /cellSize;
+            model.changeCell(i,j);
+            view.repaint();
+        }
+    }
+
+
+    public void setSpeed(int speed)
+    { timer.setDelay(10000/speed);}
+
+    public  void pause(){
+        timer.stop();
+        view.littlePanel.start.setEnabled(true);
+        view.bigPanel.pause = true;
+    }
+
 }

@@ -1,68 +1,77 @@
+/**
+ * Created by Паша on 14.11.2014.
+ */
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- * Created by Паша on 10.11.2014.
- */
 
-class View extends JFrame {
+public class View extends JFrame  {
+    Controller controller = new Controller(this);
     //Не бойтесь делать отступы - тогда легче читать код
-    BigPanel bigpanel = new BigPanel();
+    BigPanel bigPanel= new BigPanel();
     //Имена переменных пишут camelCase'ом
-    LittlePanel littlePanel = new LittlePanel(bigpanel.panelWidth);
+    LittlePanel littlePanel = new LittlePanel();
 
-    NorthPanel northPanel = new NorthPanel(bigpanel.panelWidth);
+    NorthPanel northPanel = new NorthPanel();
+
+    EastPanel eastPanel = new EastPanel();
+
     View(String s) {
         super(s);
-        setSize(bigpanel.panelWidth, bigpanel.panelHeight + 100);
         setLayout(new BorderLayout());
-        this.add(bigpanel, BorderLayout.CENTER);
+        this.add(bigPanel, BorderLayout.CENTER);
         this.add(littlePanel, BorderLayout.SOUTH);
         this.add(northPanel, BorderLayout.NORTH);
+        this.add(eastPanel,BorderLayout.EAST);
+        pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
-
-    public void globalRepaint() {
-        repaint();
+        controller.prepareForWork();
     }
 
     class BigPanel extends JPanel implements MouseListener {
-        Model model = new Model(10,10);
+        Model model;
         boolean pause = true;
-        int panelWidth;
-        int panelHeight;
+
+        int width;
+        int height;
+        int cellSize;
 
         BigPanel() {
             super();
-            panelWidth = model.width * model.cellSize + 100;
-            panelHeight = model.height * model.cellSize + 100;
-            setSize(panelWidth, panelHeight);
             addMouseListener(this);
+            setPreferredSize(new Dimension(controller.getPanelWidth(), controller.getPanelHeight()));
+            setModel(controller.getModel());
         }
 
-        public void setModel(Model model) {
-            panelWidth = model.width * model.cellSize + 100;
-            panelHeight = model.height * model.cellSize + 100;
-            this.model = model;
-        }
+         public void setModel(Model model){
+
+             this.model=model;
+
+             width = model.getWidth();
+             height = model.getHeight();
+             cellSize = model.getCellSize();
+         }
+
 
         public void paint(Graphics g) {
             g.setColor(Color.black);
-            for (int i = 0; i < model.width + 1; i++) {
-                g.drawLine(model.cellSize * i + 50, 50, model.cellSize * i + 50, model.cellSize * model.height + 50);
+            for (int i = 0; i < width + 1; i++) {
+                g.drawLine(cellSize * i + 50, 50, cellSize * i + 50, cellSize *height + 50);
             }
-            for (int i = 0; i < model.height + 1; i++) {
-                g.drawLine(50, model.cellSize * i + 50, model.cellSize * model.width + 50, model.cellSize * i + 50);
+            for (int i = 0; i < height + 1; i++) {
+                g.drawLine(50,cellSize * i + 50, cellSize * width + 50, cellSize * i + 50);
             }
 
-            for (int i = 0; i < model.height; i++) {
-                for (int j = 0; j < model.width; j++) {
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
                     //Можно использовать тернарный оператор вместо простого if/else
-                    g.setColor(model.field[i][j] ? Color.green : Color.white);
-                    g.fillRect(model.cellSize * j + 51, model.cellSize * i + 51, model.cellSize - 2, model.cellSize - 2);
+                    g.setColor(model.getCell(i,j) ? Color.green : Color.white);
+                    g.fillRect(cellSize * j + 51, cellSize * i + 51,cellSize - 2, cellSize - 2);
 
                 }
             }
@@ -70,14 +79,7 @@ class View extends JFrame {
 
         public void mousePressed(MouseEvent evt) {
             if (pause) {
-                int x = evt.getX();
-                int y = evt.getY();
-                if (x > 50 & x < panelWidth - 50 & y > 50 & y < panelHeight - 50) {
-                    int j = (x - 50) / model.cellSize;
-                    int i = (y - 50) / model.cellSize;
-                    model.field[i][j] = (!model.field[i][j]);
-                    globalRepaint();
-                }
+               controller.findAndChangeCell( evt.getX(),evt.getY());
             }
         }
 
@@ -98,21 +100,21 @@ class View extends JFrame {
         JButton start = new JButton("Старт");
         JButton stop = new JButton("Пауза");
 
-        LittlePanel(int width) {
+        LittlePanel() {
             super();
-            setSize(width, 50);
             add(start);
             add(stop);
         }
     }
+
+
     class NorthPanel extends JPanel{
         JLabel x=new JLabel();
         JTextField width=new JTextField(3);
         JTextField height=new JTextField(3);
         JButton newField = new JButton("Новое поле");
-        NorthPanel(int w){
+        NorthPanel(){
             super();
-            setSize(w, 50);
             x.setText("X");
             add(width);
             add(x);
@@ -120,5 +122,27 @@ class View extends JFrame {
             add(newField);
         }
     }
+
+    class EastPanel extends JPanel{
+        //JLabel label = new JLabel();
+
+        JSlider slider = new JSlider(JSlider.VERTICAL,10,100,10);
+
+        ChangeListener sliderListener = new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                controller.setSpeed(
+                      slider.getValue()
+                );
+            }
+        };
+        EastPanel(){
+            super();
+
+            add(slider);
+            slider.addChangeListener(sliderListener);
+        }
+    }
 }
+
 

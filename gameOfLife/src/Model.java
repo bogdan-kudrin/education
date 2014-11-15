@@ -1,7 +1,6 @@
-
-//**
-//* Created by Паша on 10.11.2014.
-  //      */
+/**
+ * Created by Паша on 14.11.2014.
+ */
 class Model {
     int width ;
     int height;
@@ -58,5 +57,20 @@ class Model {
         }
         field = copy;
     }
+
+    public void changeCell(int i,int j)
+    { field[i][j]=(!field[i][j]); }
+
+    public boolean getCell(int i,int j)
+    {return field[i][j];}
+
+    public int getWidth()
+    {return width;}
+
+    public int getHeight()
+    {return height;}
+
+    public int getCellSize()
+    {return cellSize;}
 }
 

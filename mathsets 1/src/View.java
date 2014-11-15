@@ -1,11 +1,15 @@
-/**
- * Created by Паша on 10.11.2014.
- */
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
-class View extends JFrame{
-    Model model = new Model();
+/**
+ * Created by Паша on 15.11.2014.
+ */
+class View extends JFrame {
+    Controller controller = new Controller(this);
+    Model model=controller.getModel();
+    int width=model.getWidth();
+    int height=model.getHeight();
+    int cellSize=model.getCellSize();
     View(String s){
         super(s);
         setSize(model.width*model.cellSize+100,model.height*model.cellSize+100);
@@ -14,10 +18,10 @@ class View extends JFrame{
     }
     public void paint(Graphics g){
 
-        for(int i=0;i<model.height; i++){
-            for(int j=0;j<model.width; j++){
-                g.setColor((model.picture[i][j])? Color.green : Color.white);
-                g.fillRect(i*model.cellSize+50,j*model.cellSize+50,model.cellSize,model.cellSize);
+        for(int i=0;i<height; i++){
+            for(int j=0;j<width; j++){
+                g.setColor((model.getCell(i,j))? Color.green : Color.white);
+                g.fillRect(i*cellSize+50,j*cellSize+50,cellSize,cellSize);
             }
         }
     }
