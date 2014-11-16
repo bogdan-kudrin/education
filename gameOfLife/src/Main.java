@@ -38,8 +38,7 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         gridBagConstraints.anchor = GridBagConstraints.NORTH;
         add(right, gridBagConstraints);
 
-        framesPerSecond = new JSlider(JSlider.VERTICAL, 0, 20, 10);
-        gameOfLifeField.setFPS((int) Math.sqrt(1 << 10));
+        framesPerSecond = new JSlider(JSlider.VERTICAL, 0, 6, 3);
         framesPerSecond.addChangeListener(this);
         framesPerSecond.setMajorTickSpacing(5);
         framesPerSecond.setPreferredSize(new Dimension(50, 200));
@@ -50,7 +49,7 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         framesPerSecond.setPaintLabels(true);
         right.add(framesPerSecond);
 
-        fieldWidth = new JSlider(JSlider.VERTICAL, 0, 80, 50);
+        fieldWidth = new JSlider(JSlider.VERTICAL, 0, 80, 25);
         fieldWidth.addChangeListener(this);
         fieldWidth.setMajorTickSpacing(20);
         fieldWidth.setMinorTickSpacing(5);
@@ -76,16 +75,17 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         if (!source.getValueIsAdjusting()) {
             if (source.equals(framesPerSecond)) {
                 int fps = source.getValue();
-                gameOfLifeField.setFPS((int) Math.sqrt(1 << fps));
+                System.out.println(fps);
+                gameOfLifeField.setFPS(Math.pow(2, fps));
             } else if (source.equals(fieldWidth)) {
                 int width = source.getValue();
                 gameOfLifeField.setWidth(width);
             }
         }
+        gameOfLifeField.update();
     }
-
-
-    public static void main(String s[]) {
+    
+    public static void createAndShowGUI() {
         JFrame frame = new JFrame();
         // С JFrame среда разработки ругается
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -96,5 +96,14 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
         frame.pack();
 
         frame.setVisible(true);
+    }
+
+
+    public static void main(String s[]) {
+    	javax.swing.SwingUtilities.invokeLater(new Runnable() {
+	        public void run() {
+	            createAndShowGUI();
+	        }
+    	});
     }
 }
