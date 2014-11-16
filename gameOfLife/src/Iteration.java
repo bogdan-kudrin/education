@@ -35,18 +35,18 @@ public class Iteration
 
 
     public void done()
-   {
+    {
         Table tmp = new Table(model.getSize(),model.getTable());
         int n = tmp.getSize();
         for (int i = 0; i <= n-1; i++)
-          for (int j = 0; j <= n-1; j++)
-          {
-              int k = 0;
-              for (int l = 1; l <= 8; l++)
-              if (tmp.getNeighbour(i,j,l)) k++;
-              if ( (k < 2) || (k > 3) ) model.setCellValue(i,j,false);
-              else if (k == 3) model.setCellValue(i,j,true);
-          }
+            for (int j = 0; j <= n-1; j++)
+            {
+                int k = 0;
+                for (int l = 1; l <= 8; l++)
+                    if (tmp.getNeighbour(i,j,l)) k++;
+                if ( (k < 2) || (k > 3) ) model.setCellValue(i,j,false);
+                else if (k == 3) model.setCellValue(i,j,true);
+            }
 
     }
 

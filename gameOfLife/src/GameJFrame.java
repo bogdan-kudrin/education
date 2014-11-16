@@ -7,12 +7,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GameJFrame extends JFrame {
-    int size;
+
     JDrawPanel MyJDrawPanel;
 
-    public GameJFrame(int size_) {
-        size = size_;
-        MyJDrawPanel = new JDrawPanel(size);//создаем панель
+    public GameJFrame() {
+        MyJDrawPanel = new JDrawPanel();//создаем панель
 
         MyJDrawPanel.addMouseListener(new MouseAdapter() {
 
@@ -20,6 +19,7 @@ public class GameJFrame extends JFrame {
             public void mouseClicked(MouseEvent event) {
 //                JOptionPane.showMessageDialog(null, event.getX());
 //                JOptionPane.showMessageDialog(null, event.getY());
+                int size = MyJDrawPanel.sizeGame;
                 int x = (event.getX() - 2) / ((getWidth() - 20) / size);
                 int y = (event.getY() - 30) / ((getHeight() - 68) / size);
                 if (((event.getX() - 2) >= 0) && (x < size) && ((event.getY() - 30) >= 0) && (y < size)) {
@@ -31,6 +31,6 @@ public class GameJFrame extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         getContentPane().add(MyJDrawPanel);
-        setSize(300, 300);
+        setSize(500, 500);
     }
 }
