@@ -1,20 +1,33 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Паша on 15.11.2014.
  */
 class View extends JFrame {
-    Controller controller = new Controller(this);
-    Model model=controller.getModel();
+    Model model=new Model();
     int width=model.getWidth();
     int height=model.getHeight();
     int cellSize=model.getCellSize();
+
+    ActionListener timerListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            model.doIterate();
+            repaint();
+        }
+    };
+
     View(String s){
         super(s);
-        setSize(model.width*model.cellSize+100,model.height*model.cellSize+100);
+        setSize(width*cellSize+100,height*cellSize+100);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Timer timer= new Timer(1000,timerListener);
+        timer.start();
     }
     public void paint(Graphics g){
 

@@ -1,3 +1,4 @@
+
 /**
  * Created by Паша on 14.11.2014.
  */
@@ -5,6 +6,9 @@ class Model {
     int width ;
     int height;
     int cellSize;
+
+    int panelWidth;
+    int panelHeight;
     //Так по-моему все-таки правильнее, хоть на занятии я сам так и написал изначально model
     boolean field[][];
 
@@ -12,6 +16,8 @@ class Model {
         width=w;
         height=h;
         cellSize=(w>h) ? 600/w : 600/h;
+        panelHeight=height*cellSize+100;
+        panelWidth=width*cellSize+100;
         field= new boolean[height][width];
         for(int i=0;i<height;i++){
             for(int j=0;j<width;j++)
@@ -58,19 +64,40 @@ class Model {
         field = copy;
     }
 
-    public void changeCell(int i,int j)
-    { field[i][j]=(!field[i][j]); }
 
-    public boolean getCell(int i,int j)
-    {return field[i][j];}
+    public void findAndChangeCell(int x,int y){
+        if (x > 50 & x < panelWidth - 50 & y > 50 & y < panelHeight - 50) {
+            int j = (x - 50) / cellSize;
+            int i = (y - 50) / cellSize;
+
+            field[i][j] = (!field[i][j]);
+        }
+    }
+
+
+    public boolean getCell(int i,int j){
+        return field[i][j];
+    }
 
     public int getWidth()
-    {return width;}
+    {
+        return width;
+    }
 
-    public int getHeight()
-    {return height;}
+    public int getHeight(){
+        return height;
+    }
 
-    public int getCellSize()
-    {return cellSize;}
+    public int getPanelWidth() {
+        return panelWidth;
+    }
+
+    public int getPanelHeight() {
+        return panelHeight;
+    }
+
+    public int getCellSize(){
+        return cellSize;
+    }
 }
 

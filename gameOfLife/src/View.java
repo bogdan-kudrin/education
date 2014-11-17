@@ -1,16 +1,14 @@
-/**
- * Created by Паша on 14.11.2014.
- */
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-
-public class View extends JFrame  {
-    Controller controller = new Controller(this);
+public class View extends JFrame {
+    Model model=new Model(10,10);
     //Не бойтесь делать отступы - тогда легче читать код
     BigPanel bigPanel= new BigPanel();
     //Имена переменных пишут camelCase'ом
@@ -19,6 +17,20 @@ public class View extends JFrame  {
     NorthPanel northPanel = new NorthPanel();
 
     EastPanel eastPanel = new EastPanel();
+
+    Timer timer;
+
+    ActionListener timerListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            model.doIteration();
+            repaint();
+        }
+
+    };
+
+
+
 
     View(String s) {
         super(s);
@@ -30,11 +42,17 @@ public class View extends JFrame  {
         pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        controller.prepareForWork();
+
+        timer= new Timer(1000, timerListener);
+
+        timer.start();
+        timer.stop();
+    }
+    public void globalRepaint(){
+        repaint();
     }
 
     class BigPanel extends JPanel implements MouseListener {
-        Model model;
         boolean pause = true;
 
         int width;
@@ -44,18 +62,16 @@ public class View extends JFrame  {
         BigPanel() {
             super();
             addMouseListener(this);
-            setPreferredSize(new Dimension(controller.getPanelWidth(), controller.getPanelHeight()));
-            setModel(controller.getModel());
+            setModel();
         }
 
-         public void setModel(Model model){
+        public void setModel(){
 
-             this.model=model;
-
-             width = model.getWidth();
-             height = model.getHeight();
-             cellSize = model.getCellSize();
-         }
+            width = model.getWidth();
+            height = model.getHeight();
+            cellSize = model.getCellSize();
+            setPreferredSize(new Dimension(model.getPanelWidth(), model.getPanelHeight()));
+        }
 
 
         public void paint(Graphics g) {
@@ -79,7 +95,8 @@ public class View extends JFrame  {
 
         public void mousePressed(MouseEvent evt) {
             if (pause) {
-               controller.findAndChangeCell( evt.getX(),evt.getY());
+                model.findAndChangeCell( evt.getX(),evt.getY());
+                globalRepaint();
             }
         }
 
@@ -96,14 +113,44 @@ public class View extends JFrame  {
         }
     }
 
+    public  void pause(){
+        timer.stop();
+        littlePanel.start.setEnabled(true);
+        bigPanel.pause = true;
+    }
+
+    public void setSpeed(int speed) {
+        timer.setDelay(10000/speed);
+    }
+
+
     class LittlePanel extends JPanel {
         JButton start = new JButton("Старт");
         JButton stop = new JButton("Пауза");
+
+        ActionListener startListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.restart();
+                littlePanel.start.setEnabled(false);
+                bigPanel.pause = false;
+            }
+        };
+
+        ActionListener stopListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pause();
+            }
+        };
 
         LittlePanel() {
             super();
             add(start);
             add(stop);
+
+            stop.addActionListener(stopListener);
+            start.addActionListener(startListener);
         }
     }
 
@@ -113,6 +160,35 @@ public class View extends JFrame  {
         JTextField width=new JTextField(3);
         JTextField height=new JTextField(3);
         JButton newField = new JButton("Новое поле");
+
+        ActionListener newFieldListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int width=0,height=0;
+
+                try {
+                    width = Integer.valueOf(
+                            northPanel.width.getText()
+                    );
+                }catch (NumberFormatException e1) {return;}
+
+                try {
+                    height = Integer.valueOf(
+                            northPanel.height.getText()
+                    );
+                }catch (NumberFormatException e1) {return;}
+
+                pause();
+
+                model=new Model(width,height);
+
+                bigPanel.setModel();
+
+                pack();
+                globalRepaint();
+            }
+        };
+
         NorthPanel(){
             super();
             x.setText("X");
@@ -120,19 +196,20 @@ public class View extends JFrame  {
             add(x);
             add(height);
             add(newField);
+
+            newField.addActionListener(newFieldListener);
         }
     }
 
     class EastPanel extends JPanel{
-        //JLabel label = new JLabel();
 
         JSlider slider = new JSlider(JSlider.VERTICAL,10,100,10);
 
         ChangeListener sliderListener = new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                controller.setSpeed(
-                      slider.getValue()
+                setSpeed(
+                        slider.getValue()
                 );
             }
         };
