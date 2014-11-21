@@ -3,105 +3,134 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
-//Здорово, осталось только ввод живых клеток по клику сделать
 public class Animation extends JLabel implements ActionListener, MouseListener {
-    public Field game;
-    public boolean stopped = false;
-    Timer timer;
-    final Color gr = new Color(0, 128, 0);
-    //Лучше каждую переменную в своей строке писать
-    double msPerFrame = 1000/8;
-    double cntTicks = 0;
-    int width = 25;
-    int height = 25;
+	private Field game;
+	private boolean stopped = false;
+	private Timer timer;
+	private final Color GREEN = new Color(0, 128, 0);
+	private final Color GRAY = new Color(128, 128, 128);
+	private double msPerFrame = 1000 / 8;
+	private double cntTicks = 0;
+	private int width = 25;
+	private int height = 25;
 
-    public Animation() {
-        this.setBackground(Color.WHITE);
-        
-        addMouseListener(this);
+	private final int minimumGridSize = 5;
+	private final int timerDelay = (int)((double) 1000 / 32);
 
-        game = new Field();
-        timer = new Timer(125, this);
-        timer.setInitialDelay(125);
-        timer.start();
-    }
+	public Animation(boolean makeStopped) {
+		this.setBackground(Color.WHITE);
 
-    public void mouseClicked(MouseEvent e) {
-    	Dimension d = getSize();
-    	double grid_x = (double)d.width / width, grid_y = (double)d.height / height;
-    	int x = (int)Math.floor((double)e.getX() / grid_x);
-    	int y = (int)Math.floor((double)e.getY() / grid_y);
-    	game.f[y][x] = game.f[y][x] ^ true;
-    	repaint();
-    	System.out.println(x);
-    	System.out.println(y);
-    	System.out.println(e.getX());
-    	System.out.println(e.getX());
-    }
+		addMouseListener(this);
 
-    public void mouseReleased(MouseEvent e) {
-    }
-    
-    public void mousePressed(MouseEvent e) {
-    }
+		game = new Field();
+		timer = new Timer((int) timerDelay, this);
+		timer.setInitialDelay((int) timerDelay);
+		if (!makeStopped) {
+			timer.start();
+		} else {
+			stopped = true;
+		}
+	}
 
-    public void mouseEntered(MouseEvent e) {
-    }
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Dimension d = getSize();
+		double gridX = (double) d.width / width, gridY = (double) d.height
+				/ height;
+		int x = (int) Math.floor(e.getX() / gridX);
+		int y = (int) Math.floor(e.getY() / gridY);
+		game.xorPoint(y, x);
+		repaint();
+	}
 
-    public void mouseExited(MouseEvent e) {
-    }
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
 
-    public void actionPerformed(ActionEvent e) {
-        if (stopped) return;
-        cntTicks++;
-        while (cntTicks >= msPerFrame / 125) {
-        	cntTicks -= msPerFrame / 125;
-        	game.step();
-        }
-        repaint();
-    }
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
 
-    public void setFPS(double fps) {
-        //Всегда фигурные скобки в if/else
-        //Или можно использовать тернарный оператор
-    	msPerFrame = (double)1000/fps;
-    	System.out.println(fps);
-    }
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
 
-    public void setWidth(int w) {
-        width = height = w;
-    }
-    
-    public void update() {
-    	repaint();
-    }
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
 
-    public void paintComponent(Graphics g) {
-        Graphics2D graphics = (Graphics2D) g;
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Dimension d = getSize();
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (stopped)
+			return;
+		cntTicks++;
+		update();
+	}
 
-        graphics.clearRect(0, 0, d.width, d.height);
+	public void setFPS(double fps) {
+		msPerFrame = 1000 / fps;
+	}
 
-        double w = width, h = height, grid_x = d.width / w, grid_y = d.height / h;
+	public void setWidth(int w) {
+		width = w;
+	}
 
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                //Можно просто так, сравнение с true избыточно
-                if (game.f[i][j]) {
-                    graphics.setPaint(gr);
-                    graphics.fill(new Ellipse2D.Double(grid_x * (j + 0.1), grid_y * (i + 0.1), grid_x * 0.8, grid_y * 0.8));
-                }
-            }
-        }
-        graphics.setPaint(new Color(128, 128, 128));
-        if (grid_x > 5 && grid_y > 5) {
-            for (int i = 1; i < w; i++) {
-                graphics.draw(new Line2D.Double(i * grid_x, 0, i * grid_x, d.height));
-            }
-            for (int i = 1; i < h; i++) {
-                graphics.draw(new Line2D.Double(0, i * grid_y, d.width, i * grid_y));
-            }
-        }
-    }
+	public void setHeight(int h) {
+		height = h;
+	}
+
+	public void stop() {
+		stopped = true;
+		timer.stop();
+	}
+
+	public void start() {
+		stopped = false;
+		timer.start();
+	}
+	
+	public boolean isStopped() {
+		return stopped;
+	}
+
+	public void update() {
+		while (cntTicks >= msPerFrame / timerDelay) {
+			cntTicks -= msPerFrame / timerDelay;
+			game.step();
+		}
+		repaint();
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		Graphics2D graphics = (Graphics2D) g;
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		Dimension d = getSize();
+
+		graphics.clearRect(0, 0, d.width, d.height);
+
+		double gridX = (double) d.width / width, gridY = (double) d.height / height;
+
+		graphics.setPaint(GREEN);
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (game.getPoint(i, j)) {
+					graphics.fill(new Ellipse2D.Double(gridX * (j + 0.1), gridY
+							* (i + 0.1), gridX * 0.8, gridY * 0.8));
+				}
+			}
+		}
+		graphics.setPaint(GRAY);
+		if (gridX > minimumGridSize && gridY > minimumGridSize) {
+			for (int i = 1; i < width; i++) {
+				graphics.draw(new Line2D.Double(i * gridX, 0, i * gridX,
+						d.height));
+			}
+			for (int i = 1; i < height; i++) {
+				graphics.draw(new Line2D.Double(0, i * gridY, d.width, i
+						* gridY));
+			}
+		}
+	}
 }
