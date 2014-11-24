@@ -9,16 +9,6 @@ public class field {
 		public	field(int size) {
 		this.size=size;
 		matrix = new boolean[size][size];
-		for( int i=0; i<size; i++){
-			for(int j=0; j<size; j++){
-				if(rand.nextInt(7)<3){
-					matrix[i][j]=true;
-				}
-				else{
-					matrix[i][j]=false;
-				}
-			}		
-		}
 	}
 		public void iterate(){
 			boolean[][] matrix2 = new boolean[size][size];

@@ -1,8 +1,6 @@
 package gamelife;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -22,11 +20,12 @@ public class window extends JFrame {
   private JButton stop;
   private JTextField Size = new JTextField(5);
   private JButton Ready;
-  private int k;
+  JPanel Canvas;
+  private int k, sizeX, sizeY;
   private String s;
   int size;
   field board;
-  MyDrawPanel DrawPanel = new MyDrawPanel();
+  //MyDrawPanel DrawPanel;
   Timer timer;
   boolean flag1, flag2;
   boolean[][] previous;
@@ -44,50 +43,39 @@ public class window extends JFrame {
     Ready = new JButton("Ready!");
  
     JPanel buttonsPanel = new JPanel(new FlowLayout()); 
-    frame.getContentPane().add(BorderLayout.NORTH, countLabel);
     buttonsPanel.add(iterate);
     buttonsPanel.add(reboot);
     buttonsPanel.add(start);
     buttonsPanel.add(stop);
     buttonsPanel.add(Size);
     buttonsPanel.add(Ready);
-    frame.getContentPane().add(BorderLayout.CENTER, DrawPanel);
-    frame.getContentPane().add(BorderLayout.SOUTH, buttonsPanel);
+    frame.add(Canvas = new JPanel() {
+    	
+      public void paintComponent(Graphics g) {
+      super.paintComponent(g);
+  	  g.setColor(Color.BLACK);
+  	  setBackground(Color.WHITE);
+  	  int x=0;
+  	  int y=0;
+
+  	  for(x=0;x<size;x++){
+  	  for(y=0;y<size;y++){
+  	  if(board.matrix[x][y])
+  	  g.fillRect(x*sizeX, y*sizeY, sizeX, sizeY);
+  	  }
+  	  }
+  	  } });
+    //frame.getContentPane().add(BorderLayout.CENTER, DrawPanel);
+    frame.getContentPane().add(buttonsPanel, BorderLayout.PAGE_END);
+    //DrawPanel.setPreferredSize(new Dimension(900, 900));    
+    frame.getContentPane().add(countLabel, BorderLayout.PAGE_START);
+    frame.getContentPane().add(Canvas, BorderLayout.CENTER);
     initListeners();
     timer=new Timer(200,new ActionListener(){
 		public void actionPerformed(ActionEvent e){
 			board.iterate();
-			/**
-			flag1 = false;
-			flag2 = false;
-			for(int i=0; i<size; i++){
-				for(int j=0; j<size; j++){
-				if(DrawPanel.drw[i][j]!=board.matrix[i][j]){			
-				flag1=true;
-				}
-				}
-			}
-			for(int i=0; i<size; i++){
-				for(int j=0; j<size; j++){
-				if(previous[i][j]!=board.matrix[i][j]){			
-				flag2=true;
-				}
-				}
-			}
-			if((!flag1)||(!flag2)){
-				board = new field(size);
-				lifes+=1;
-				if(n>longestlife){
-					longestlife=n;
-				}
-				averagelife=(double)step/lifes;
-				n=0;
-			}
-			*/
 			step = step + 1;
 			n+=1;
-			previous=DrawPanel.drw;
-			DrawPanel.drw=board.matrix;
 			updateStepCounter();
 			frame.repaint();
 		}
@@ -99,27 +87,17 @@ public class window extends JFrame {
 		return k;
 	}
   public void begin(){
-	  previous = new boolean[size][size];
-	    for(int i=0; i<size; i++){
-			for(int j=0; j<size; j++){
-				previous[i][j]=false;
-			}
-	    }
 	    board = new field(size);
-	    DrawPanel.drw=new boolean[size][size];
-	    DrawPanel.num=size;
-	    DrawPanel.drw=board.matrix;
-	    DrawPanel.sizeX=900/size;
-	    DrawPanel.sizeY=900/size;
+	    sizeX=900/size;
+	    sizeY=900/size;
 	    frame.repaint();
   }
   private void initListeners() {
 	     iterate.addActionListener(new ActionListener() {
-	       public void actionPerformed(ActionEvent e) {
+	       public void actionPerformed(ActionEvent e) {	    	   
 	         step = step + 1; 
 	         n+=1;
 	         board.iterate();
-	         DrawPanel.drw=board.matrix;
 	         updateStepCounter();
 	         frame.repaint();
 	       }
@@ -130,10 +108,7 @@ public class window extends JFrame {
 		         lifes=0;
 		         n=0;
 		         longestlife=0;
-		         board = new field(size);
-		         DrawPanel.drw=board.matrix;
-		         updateStepCounter();
-		         frame.repaint();
+		         begin();
 		       }
 		     });
 	     start.addActionListener(new ActionListener() {
@@ -152,20 +127,27 @@ public class window extends JFrame {
 		    	   begin();
 		       }
 		     });
-	     addMouseListener(new MouseAdapter() {
+	     Canvas.addMouseListener(new MouseAdapter() {
 
-	            @Override
-	            public void mousePressed(MouseEvent me) {
-	                w = getWidth() / size;
-	                h = getHeight() / size;
-	                board.setalive(me.getX() / w, me.getY() / h, true);
-	                DrawPanel.drw=board.matrix;
-	                frame.repaint();
-	            }
+	 	    @Override
+	 	    public void mousePressed(MouseEvent me) {
+	 	        board.setalive(me.getX() / sizeX + 1, me.getY() / sizeY + 1, true);
+	 	        frame.repaint();
+	 	    }
 
-	        });
+	 	});
+	     Canvas.addMouseMotionListener(new MouseMotionAdapter() {
+
+		 	    @Override
+		 	    public void mouseDragged(MouseEvent me) {
+		 	        board.setalive(me.getX() / sizeX + 1, me.getY() / sizeY + 1, true);
+		 	        frame.repaint();
+		 	    }
+
+		 	});
   }
   private void updateStepCounter() {
 	     countLabel.setText("Steps:" + step + "      Lifes:" + lifes + "      Longest Life:" + longestlife + "      Average Life:" + averagelife);
   }
+  
 }
