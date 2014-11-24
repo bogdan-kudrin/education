@@ -1,12 +1,15 @@
 public class Model
 {
-    public static final int width = 700, height = 700;
-    public static final double x1 = -3, x2 = 3, y1 = -3, y2 = 3;
-    public static final double a = 2.2, b = 0.4;
+    public static int width = 300, height = 300;
+    public static double x1 = -2, x2 = 2, y1 = -2, y2 = 2;
+    public static double a = 2, b = 0.3;
     public boolean[][] f=new boolean[height][width];
+    
+    public int type = 1;
 
     public boolean isInRegion(double x, double y) {
-        if (x*x+y*y<=8) return true;
+    	//if (x >= x1 && x <= x2 && y >= y1 && y <= y2) return true;
+    	if (x*x + y*y <= 4) return true;
         else return false;
     }
 
@@ -26,16 +29,21 @@ public class Model
     }
 
     public double getNextX(double x, double y) {
-        return (1+y-a*x*x);
+        if (type == 1) return x*x-y*y+0.4;
+        else if (type == 0) return 1+y-a*x*x;
+        else if (type == 2) return y;
+        return 0;
     }
 
     public double getNextY(double x, double y) {
-        return b*y;
+        if (type == 1) return 2*x*y+0.4;
+        else if (type == 0) return b*x;
+        else if (type == 2) return 2.27*y*(1-x);
+        return 0;
     }
 
     public int getNextI(int i, int j) {
         return YtoI(getNextY(jToX(j), iToY(i)));
-
     }
 
     public int getNextJ(int i, int j) {
@@ -48,6 +56,17 @@ public class Model
                 if (isInRegion(jToX(j), iToY(i))) f[i][j]=true;
             }
         }
+    }
+    
+    public Model(String stringType) {
+    	this();
+    	if (stringType == "complexNumbers") {
+    		type = 1;
+    	} else if (stringType == "henon") {
+    		type = 0;
+    	} else if (stringType == "someMap") {
+    		type = 2;
+    	}
     }
 
     public void nextStep() {
