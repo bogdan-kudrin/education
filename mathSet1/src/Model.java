@@ -1,27 +1,28 @@
 public class Model
 {
-    public static final int width = 500, height = 500;
-    public static final double a = 2.2, b = 0.1;
+    public static final int width = 700, height = 700;
+    public static final double x1 = -3, x2 = 3, y1 = -3, y2 = 3;
+    public static final double a = 2.2, b = 0.4;
     public boolean[][] f=new boolean[height][width];
 
     public boolean isInRegion(double x, double y) {
-        if (x*x+y*y<=1.5) return true;
+        if (x*x+y*y<=8) return true;
         else return false;
     }
 
     public double jToX(int j) {
-        return (double)j*((double)4/width)-2;
+        return (double)j*((double)(x2-x1)/width)+x1;
     }
 
     public double iToY(int i) {
-        return (double)i*((double)4/height)-2;
+        return (double)i*((double)(y2-y1)/height)+y1;
     }
 
     public int XtoJ(double x) {
-        return (int)((x+2)*width/4);
+        return (int)((x-x1)*width/(x2-x1));
     }
     public int YtoI(double y) {
-        return (int)((y+2)*height/4);
+        return (int)((y-y1)*height/(y2-y1));
     }
 
     public double getNextX(double x, double y) {
