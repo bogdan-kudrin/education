@@ -8,11 +8,6 @@ import javax.swing.*;
 public class window extends JFrame {
 	JFrame frame;
   private int step = 0;
-  private int lifes = 0;
-  private int n = 0;
-  private int w, h;
-  private int longestlife = 0;
-  private double averagelife = 0;
   private JLabel countLabel;
   private JButton iterate;
   private JButton reboot;
@@ -25,17 +20,14 @@ public class window extends JFrame {
   private String s;
   int size;
   field board;
-  //MyDrawPanel DrawPanel;
   Timer timer;
   boolean flag1, flag2;
-  boolean[][] previous;
  
   public window(){
 	super("Life game");
-	//setSize(700, 800);
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame = new JFrame();
-    countLabel = new JLabel("Steps:" + step + "      Lifes:" + lifes + "      Longest Life:" + longestlife + "      Average Life:" + averagelife);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    countLabel = new JLabel("Steps:" + step);
     iterate = new JButton("iterate!");
     reboot = new JButton("reboot!");
     start = new JButton("start!");
@@ -65,9 +57,7 @@ public class window extends JFrame {
   	  }
   	  }
   	  } });
-    //frame.getContentPane().add(BorderLayout.CENTER, DrawPanel);
-    frame.getContentPane().add(buttonsPanel, BorderLayout.PAGE_END);
-    //DrawPanel.setPreferredSize(new Dimension(900, 900));    
+    frame.getContentPane().add(buttonsPanel, BorderLayout.PAGE_END);   
     frame.getContentPane().add(countLabel, BorderLayout.PAGE_START);
     frame.getContentPane().add(Canvas, BorderLayout.CENTER);
     initListeners();
@@ -75,7 +65,6 @@ public class window extends JFrame {
 		public void actionPerformed(ActionEvent e){
 			board.iterate();
 			step = step + 1;
-			n+=1;
 			updateStepCounter();
 			frame.repaint();
 		}
@@ -96,7 +85,6 @@ public class window extends JFrame {
 	     iterate.addActionListener(new ActionListener() {
 	       public void actionPerformed(ActionEvent e) {	    	   
 	         step = step + 1; 
-	         n+=1;
 	         board.iterate();
 	         updateStepCounter();
 	         frame.repaint();
@@ -105,9 +93,6 @@ public class window extends JFrame {
 	     reboot.addActionListener(new ActionListener() {
 		       public void actionPerformed(ActionEvent e) {
 		         step = 0; 
-		         lifes=0;
-		         n=0;
-		         longestlife=0;
 		         begin();
 		       }
 		     });
@@ -147,7 +132,7 @@ public class window extends JFrame {
 		 	});
   }
   private void updateStepCounter() {
-	     countLabel.setText("Steps:" + step + "      Lifes:" + lifes + "      Longest Life:" + longestlife + "      Average Life:" + averagelife);
+	     countLabel.setText("Steps:" + step);
   }
   
 }
