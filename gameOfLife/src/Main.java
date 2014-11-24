@@ -8,7 +8,7 @@ public class Main extends JPanel implements ActionListener, ChangeListener {
 	Animation gameOfLifeField;
 	JButton button;
 	JSlider fieldWidth;
-	JSlider framesPerSecond;
+	JSlider framesPerSecond; 
 	
 	final int initialWidth = 40;
 	final int initialHeight = 40;
