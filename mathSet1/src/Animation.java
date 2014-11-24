@@ -64,5 +64,13 @@ public class Animation extends JPanel implements ActionListener {
                             (double)d.width/Model.width+2*eps, (double)d.height/Model.height+2*eps));
             }
         }
+        Font font = graphics.getFont();
+        int size = font.getSize();
+        int style = font.getStyle();
+        String name = font.getName();
+        System.out.println(name + " " + style + " " + size);
+        graphics.setFont(new Font(name, style, 20));
+        graphics.setPaint(new Color(255, 255, 255));
+        graphics.drawString("Count of steps: " + cntSteps, 10, 30);
     }
 }
