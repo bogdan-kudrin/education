@@ -1,7 +1,8 @@
 public class Model {
-	public static int width = 300, height = 300;
-	public static double x1 = -2, x2 = 2, y1 = -2, y2 = 2;
-	public static double a = 2, b = 0.3;
+	public static final int defaultWidth = 300, defaultHeight = 300;
+	public int width = defaultWidth, height = defaultHeight;
+	public double x1 = -2, x2 = 2, y1 = -2, y2 = 2;
+	public double a = 0.4, b = 0.4;
 	public boolean[][] f = new boolean[height][width];
 
 	public int type = 1;
@@ -32,7 +33,7 @@ public class Model {
 
 	public double getNextX(double x, double y) {
 		if (type == 1)
-			return x * x - y * y + 0.4;
+			return x * x - y * y + a;
 		else if (type == 0)
 			return 1 + y - a * x * x;
 		else if (type == 2)
@@ -42,7 +43,7 @@ public class Model {
 
 	public double getNextY(double x, double y) {
 		if (type == 1)
-			return 2 * x * y + 0.4;
+			return 2 * x * y + b;
 		else if (type == 0)
 			return b * x;
 		else if (type == 2)
@@ -70,12 +71,38 @@ public class Model {
 	public Model(String stringType) {
 		this();
 		if (stringType == "complexNumbers") {
+			a = 0.4;
+			b = 0.4;
+			type = 1;
+		} else if (stringType == "henon") {
+			a = 2;
+			b = 0.3;
+			type = 0;
+		} else if (stringType == "someMap") {
+			type = 2;
+		}
+	}
+	
+	public Model(String stringType, double newA, double newB, int newWidth, int newHeight) {
+		a = newA;
+		b = newB;
+		width = newWidth;
+		height = newHeight;
+		f = new boolean[height][width];
+		if (stringType == "complexNumbers") {
 			type = 1;
 		} else if (stringType == "henon") {
 			type = 0;
 		} else if (stringType == "someMap") {
 			type = 2;
 		}
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (isInRegion(jToX(j), iToY(i)))
+					f[i][j] = true;
+			}
+		}
+		System.out.println("Successful!" + a + " " + b);
 	}
 
 	public void nextStep() {
