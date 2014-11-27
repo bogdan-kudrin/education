@@ -13,17 +13,21 @@ public class Main extends JFrame {
 	JTextField widthTextField;
 	JTextField heightTextField;
 	JTextField iterateTextField;
+	
+	public enum DynamicsType{
+		HENON, COMPLEX_NUMBERS, SOMEMAP
+	}
 
 	public void startHenon() {
-		mainPanel.setType("henon");
+		mainPanel.setType(DynamicsType.HENON);
 	}
 
 	public void startSomeMap() {
-		mainPanel.setType("someMap");
+		mainPanel.setType(DynamicsType.SOMEMAP);
 	}
 
 	public void startComplexNumbers() {
-		mainPanel.setType("complexNumbers");
+		mainPanel.setType(DynamicsType.COMPLEX_NUMBERS);
 	}
 	
 	private final ActionListener textFieldListener = new ActionListener() {

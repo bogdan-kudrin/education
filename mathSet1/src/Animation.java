@@ -4,15 +4,15 @@ import java.awt.geom.*;
 import javax.swing.*;
 
 public class Animation extends JPanel implements ActionListener {
-	static final int timerDelay = 200;
+	static final int timerDelay = 1000;
 	Model model;
 	int[][] f = new int[Model.defaultHeight][Model.defaultWidth];
 	double[][] color = new double[Model.defaultHeight][Model.defaultWidth];
 	int cntSteps = 0;
 	int iterateSteps = 1;
-	String type = "complexNumbers";
+	Main.DynamicsType type = Main.DynamicsType.COMPLEX_NUMBERS;
 
-	void setType(String s) {
+	void setType(Main.DynamicsType s) {
 		type = s;
 		model = new Model(s);
 		f = new int[model.height][model.width];
@@ -69,7 +69,7 @@ public class Animation extends JPanel implements ActionListener {
 
 	public Animation() {
 		this.setPreferredSize(new Dimension(700, 700));
-		setType("ComplexNumbers");
+		setType(Main.DynamicsType.COMPLEX_NUMBERS);
 		Timer timer = new Timer(timerDelay, this);
 		timer.start();
 		repaint();

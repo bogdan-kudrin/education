@@ -68,32 +68,32 @@ public class Model {
 		}
 	}
 
-	public Model(String stringType) {
+	public Model(Main.DynamicsType stringType) {
 		this();
-		if (stringType == "complexNumbers") {
+		if (stringType == Main.DynamicsType.COMPLEX_NUMBERS) {
 			a = 0.4;
 			b = 0.4;
 			type = 1;
-		} else if (stringType == "henon") {
+		} else if (stringType == Main.DynamicsType.HENON) {
 			a = 2;
 			b = 0.3;
 			type = 0;
-		} else if (stringType == "someMap") {
+		} else if (stringType == Main.DynamicsType.SOMEMAP) {
 			type = 2;
 		}
 	}
 	
-	public Model(String stringType, double newA, double newB, int newWidth, int newHeight) {
+	public Model(Main.DynamicsType stringType, double newA, double newB, int newWidth, int newHeight) {
 		a = newA;
 		b = newB;
 		width = newWidth;
 		height = newHeight;
 		f = new boolean[height][width];
-		if (stringType == "complexNumbers") {
+		if (stringType == Main.DynamicsType.COMPLEX_NUMBERS) {
 			type = 1;
-		} else if (stringType == "henon") {
+		} else if (stringType == Main.DynamicsType.HENON) {
 			type = 0;
-		} else if (stringType == "someMap") {
+		} else if (stringType == Main.DynamicsType.SOMEMAP) {
 			type = 2;
 		}
 		for (int i = 0; i < height; i++) {
