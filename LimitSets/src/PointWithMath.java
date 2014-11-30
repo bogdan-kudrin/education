@@ -1,7 +1,7 @@
 import java.math.*;
 public class PointWithMath {
 	double x,y;
-	double a=0.28,b=-0.0113;
+	double a=0.28,b=-0.0109;
 	public void f_1(){
 		double newX,newY;
 //		newX=1+y-a*x*x;
