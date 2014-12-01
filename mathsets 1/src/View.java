@@ -11,6 +11,7 @@ class View extends JFrame {
     int width=model.getWidth();
     int height=model.getHeight();
     int cellSize=model.getCellSize();
+    Color color[] = new Color[5];
 
     ActionListener timerListener = new ActionListener() {
         @Override
@@ -28,12 +29,18 @@ class View extends JFrame {
 
         Timer timer= new Timer(1000,timerListener);
         timer.start();
+
+        color[0]=Color.black;
+        color[1]=Color.red;
+        color[2]=Color.green;
+        color[3]=Color.blue;
+        color[4]=Color.pink;
     }
     public void paint(Graphics g){
 
         for(int i=0;i<height; i++){
             for(int j=0;j<width; j++){
-                g.setColor((model.getCell(i,j))? Color.green : Color.white);
+                g.setColor(color[model.getCell(i,j)]);
                 g.fillRect(i*cellSize+50,j*cellSize+50,cellSize,cellSize);
             }
         }
