@@ -19,7 +19,7 @@ public class Form extends JFrame {
 	public void OpenForm(){
 		frame=new JFrame();
 		button=new JButton("!");
-		MyDrawPanel DrawPanel=new MyDrawPanel();
+		final MyDrawPanel DrawPanel=new MyDrawPanel();
 		DrawPanel.drw=new int[size][size];
 		DrawPanel.num=size;
 
@@ -37,7 +37,7 @@ public class Form extends JFrame {
 				button.setText("!!");
 			}
 		});
-		PointWithMath[][] points=new PointWithMath[size+10][size+10];
+		final PointWithMath[][] points=new PointWithMath[size+10][size+10];
 		used=new boolean[size+10][size+10];
 		for(int i=-size/2;i<size/2;i++)
 			for(int j=-size/2;j<size/2;j++){
