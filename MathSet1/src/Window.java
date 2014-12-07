@@ -1,5 +1,3 @@
-package mathset;
-
 import java.awt.*;
 import java.awt.event.*;
 

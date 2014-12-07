@@ -1,5 +1,3 @@
-package mathset;
-
 public class Model {
 	int[][][] matrix = new int[1000][1000][3];
 	double a, b;
