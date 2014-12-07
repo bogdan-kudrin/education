@@ -16,17 +16,17 @@ public class Form extends JFrame {
 	public void OpenForm(){
 		
 		frame=new JFrame();
-		button=new JButton("Запустить таймер");
-		okbutton=new JButton("Изменить размеры поля");
+		button=new JButton("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+		okbutton=new JButton("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 		spinner=new JSpinner();
 		spinner.setValue(30);
 		panel=new Panel();
-		MyDrawPanel DrawPanel=new MyDrawPanel();
+		final MyDrawPanel DrawPanel=new MyDrawPanel();
 		DrawPanel.drw=new int[size][size];
 		DrawPanel.num=size;
 //		LifeGame doIt=new LifeGame();
 
-		LifeField mainField=new LifeField(size);
+		final LifeField mainField=new LifeField(size);
 		DrawPanel.drw=mainField.field;
 		panel.add(BorderLayout.WEST, button);
 		panel.add(BorderLayout.SOUTH,spinner);
@@ -66,7 +66,7 @@ public class Form extends JFrame {
 				if(timer.isRunning()) {
 					timer.stop();
 					frame.setTitle("Timer is stopped");
-					button.setText("Запустить таймер");
+					button.setText("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 				}
 					
@@ -74,7 +74,7 @@ public class Form extends JFrame {
 				else {
 					timer.start();
 					frame.setTitle("Timer is running");
-					button.setText("Остановить таймер");
+					button.setText("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 				}
 				
 			}
@@ -122,8 +122,8 @@ public class Form extends JFrame {
 				// TODO Auto-generated method stub
 				DrawPanel.sizeX=frame.getWidth()/size;
 				DrawPanel.sizeY=(frame.getHeight()-button.getHeight()-23)/size;
-				if(frame.getWidth()*1.0/frame.getHeight()>1.5) frame.setTitle("Клетки начинают выглядеть смешно");
-				if(frame.getWidth()*1.0/frame.getHeight()>2) frame.setTitle("Да, я растягиваю квадратное поле на всю форму");
+				if(frame.getWidth()*1.0/frame.getHeight()>1.5) frame.setTitle("пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+				if(frame.getWidth()*1.0/frame.getHeight()>2) frame.setTitle("пїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 			}
 
 			@Override
