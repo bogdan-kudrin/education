@@ -8,6 +8,7 @@ public class Model {
     int xBorderFields;
     int yBorderFields;
     boolean field[][];
+    boolean nothingChanged = false;
 
     Model (int h, int w){
 
@@ -28,21 +29,34 @@ public class Model {
             for (int j = 0 ; j < width ; ++j) {
                 for (int di = -1 ; di < 2 ; ++di) {
                     for (int dj = -1 ; dj < 2 ; ++dj) {
-                        int iCheck = (i + di + height) % height;
-                        int jCheck = (j + dj + width) % width;
-                        if (field[iCheck][jCheck])
-                            ++neighbours[i][j];
+                        if (di != 0 || dj != 0) {
+                            int iCheck = (i + di + height) % height;
+                            int jCheck = (j + dj + width) % width;
+                            if (field[iCheck][jCheck])
+                                ++neighbours[i][j];
+                        }
                     }
                 }
             }
         }
+        nothingChanged = true;
         for (int i = 0 ; i < height ; ++i) {
             for (int j = 0 ; j < width ; ++j) {
-                if (neighbours[i][j] == 3) {
+                if (neighbours[i][j] == 3 && field[i][j] == false) {
+                    nothingChanged = false;
                     field[i][j] = true;
-                } else if (neighbours[i][j] != 2) {
+                } else if ((neighbours[i][j] < 2 || neighbours[i][j] > 3) && field[i][j] == true) {
+                    nothingChanged = false;
                     field[i][j] = false;
                 }
+            }
+        }
+    }
+
+    public void clear () {
+        for (int i = 0 ; i < height ; ++i) {
+            for (int j = 0 ; j < width ; ++j) {
+                field[i][j] = false;
             }
         }
     }
