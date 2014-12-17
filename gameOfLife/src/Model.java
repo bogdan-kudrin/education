@@ -1,67 +1,49 @@
-class Model {
-    int size;
-    int cellSize;
-    int panelSize;
-    boolean field[][];
-    Model(int len) {
-        size = len;
-        cellSize = 500 / size;
-        panelSize = size * cellSize;
+/**
+ * Created by alina on 17.12.14.
+ */
+public class Model {
+    public int size = 30;
+    boolean[][] field;
+
+    public Model() {
         field = new boolean[size][size];
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++)
-                field[i][j] = false;
-        }
     }
 
-    public void doIteration() {
-        boolean copy[][] = new boolean[size][size];
-        int a, b, c, d, col;
+    public Model(int newSize) {
+        size = newSize;
+        field = new boolean[size][size];
+    }
+
+    public void nextStep() {
+        boolean[][] new_field = new boolean[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                a = (i == 0) ? size - 1 : i - 1;
-                b = (i == size - 1) ? 0 : i + 1;
-                c = (j == 0) ? size - 1 : j - 1;
-                d = (j == size - 1) ? 0 : j + 1;
-                col = 0;
-                if (field[a][c]) col++;
-                if (field[a][j]) col++;
-                if (field[a][d]) col++;
-                if (field[i][c]) col++;
-                if (field[i][d]) col++;
-                if (field[b][c]) col++;
-                if (field[b][j]) col++;
-                if (field[b][d]) col++;
-                if (!field[i][j]) {
-                    copy[i][j] = (col == 3);
-                }
-                else {
-                    copy[i][j] = (col == 3 || col == 2);
+                if (field[i][j]) {
+                    int res = 0;
+                    for (int ii = -1; ii < 2; ii++) {
+                        for (int jj = -1; jj < 2; jj++) {
+                            if (field[(i + ii + size) % size][(j + jj + size) % size] && (ii != 0 || jj != 0))
+                                res++;
+                        }
+                    }
+                    if (res == 2 || res == 3) {
+                        new_field[i][j] = true;
+                    }
+                } else {
+                    int res = 0;
+                    for (int ii = -1; ii < 2; ii++) {
+                        for (int jj = -1; jj < 2; jj++) {
+                            if (field[(i + ii + size) % size][(j + jj + size) % size] && (ii != 0 || jj != 0))
+                                res++;
+                        }
+                    }
+                    if (res == 3) {
+                        new_field[i][j] = true;
+                    }
                 }
             }
         }
-        field = copy;
+        field = new_field;
     }
 
-    public void findAndChangeCell(int x, int y){
-        int j = x / cellSize;
-        int i = y / cellSize;
-        field[i][j] = (!field[i][j]);
-    }
-
-    public boolean getCell(int i, int j){
-        return field[i][j];
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public int getPanelSize() {
-        return panelSize;
-    }
-
-    public int getCellSize(){
-        return cellSize;
-    }
 }
