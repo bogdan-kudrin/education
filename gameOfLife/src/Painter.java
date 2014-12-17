@@ -10,7 +10,7 @@ import javax.swing.Timer;
 public class Painter extends JPanel {
 
     public static final int DELAY = 100; // задержка перед следующим шагом
-    private final Field field;
+    private Field field;
     private int w, h, n;
 
     public final Timer timer = new Timer(DELAY, new ActionListener() {
@@ -20,10 +20,8 @@ public class Painter extends JPanel {
         }
     });
 
-    public Painter(Field field) {
-        this.field = field;
+    public Painter(final Field field) {
         n = field.n;
-
 
         addMouseListener(new MouseAdapter() {
 
@@ -36,6 +34,7 @@ public class Painter extends JPanel {
             }
 
         });
+        this.field = field;
     }
 
     public void update() {

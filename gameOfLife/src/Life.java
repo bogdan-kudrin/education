@@ -1,6 +1,6 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Life extends JFrame {
 
@@ -10,7 +10,7 @@ public class Life extends JFrame {
         setSize(800, 700); // устанавливаем размеры окна
         setVisible(true); // на всякий случай делаем окно видимым
         setTitle("Life");  // устанавливаем имя окошка
-        setDefaultCloseOperation(EXIT_ON_CLOSE);// устанавливаем дефолтное действие при закрытии приложения
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);// устанавливаем дефолтное действие при закрытии приложения
         painter = new Painter(new Field(50));
         setContentPane(painter);
         //add(new CommandBar());
