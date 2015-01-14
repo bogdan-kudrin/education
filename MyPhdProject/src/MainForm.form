@@ -1185,7 +1185,9 @@
       </hspacer>
       <vspacer id="af353">
         <constraints>
-          <grid row="19" column="0" row-span="1" col-span="10" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <grid row="19" column="0" row-span="1" col-span="18" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
         </constraints>
       </vspacer>
       <vspacer id="6a1ea">

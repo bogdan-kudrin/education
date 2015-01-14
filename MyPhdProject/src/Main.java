@@ -35,7 +35,7 @@ public class Main {
             @Override
             public void stateChanged(ChangeEvent e) {
                 Component component = tabbedPane.getSelectedComponent();
-                frame.setSize(component.getPreferredSize().width + 100, component.getPreferredSize().height + 100);
+                frame.setSize(component.getPreferredSize().width + 100, component.getPreferredSize().height + 150);
             }
         });
 

@@ -30,7 +30,7 @@ public class Counter{
     public static Coil fifthCoil = new Coil();
     public static Coil sixthCoil = new Coil();
     public static boolean[] enabledCoils = {false, false, false, false, false, false};
-    public static Coil[] coils = {fifthCoil, secondCoil, thirdCoil, fourthCoil, fifthCoil, sixthCoil};
+    public static Coil[] coils = {firstCoil, secondCoil, thirdCoil, fourthCoil, fifthCoil, sixthCoil};
 
     public static Point3d globalPoint = new Point3d();
     public static Vector3d pointDistribution = new Vector3d();
@@ -74,7 +74,7 @@ public class Counter{
 
     static public void countFieldDistribution(){
         initField();
-        for (int i=0; i<coils.length; i++){
+        for (int i=0; i< coils.length; i++){
             if (enabledCoils[i]){
                 countCoilFieldDistr(coils[i]);
             }
