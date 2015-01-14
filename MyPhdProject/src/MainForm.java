@@ -5,11 +5,13 @@ import validation.UnsignedValidator;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * User: BKudrin
@@ -121,6 +123,9 @@ public class MainForm {
     private JTextField pointDistributionX;
     private JTextField pointDistributionY;
     private JTextField pointDistributionZ;
+    private JButton chooseFileButton;
+    private JFileChooser fileChooser;
+    private File selectedFile;
 
     public MainForm() {
 
@@ -310,19 +315,19 @@ public class MainForm {
             }
         });
 
-       countFieldDistributionButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
+        countFieldDistributionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-               initCoils();
-               Counter.pathToOutputFile = pathToOutputFile.getText();
+                initCoils();
+                Counter.pathToOutputFile = pathToOutputFile.getText();
 
-               SwingCounter swingCounter = new SwingCounter();
-               swingCounter.execute();
-           }
+                SwingCounter swingCounter = new SwingCounter();
+                swingCounter.execute();
+            }
 
 
-       });
+        });
 
         countCoilDistributionInPointButton.addActionListener(new ActionListener() {
             @Override
@@ -339,8 +344,22 @@ public class MainForm {
                 countCoilDistributionInPointButton.setEnabled(true);
             }
         });
-    }
 
+        fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                ".vtk", "vtk");
+        fileChooser.setFileFilter(filter);
+
+        chooseFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int returnVal = fileChooser.showOpenDialog(chooseFileButton);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    pathToOutputFile.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                }
+            }
+        });
+    }
 
 
     //Вспомогательный класс для проведения вычислений в основном потоке
@@ -362,7 +381,7 @@ public class MainForm {
         }
     }
 
-    public void initCoils(){
+    public void initCoils() {
         Counter.enabledCoils[0] = firstCoilCheckBox.isSelected();
         Counter.enabledCoils[1] = secondCoilCheckBox.isSelected();
         Counter.enabledCoils[2] = thirdCoilCheckBox.isSelected();
@@ -375,84 +394,84 @@ public class MainForm {
         Counter.stepY = Integer.parseInt(stepY.getText());
         Counter.stepZ = Integer.parseInt(stepZ.getText());
 
-        Counter.areaSizeX = Integer.parseInt(areaSizeX.getText())/Counter.stepX;
-        Counter.areaSizeY = Integer.parseInt(areaSizeY.getText())/Counter.stepY;
-        Counter.areaSizeZ = Integer.parseInt(areaSizeZ.getText())/Counter.stepZ;
+        Counter.areaSizeX = Integer.parseInt(areaSizeX.getText()) / Counter.stepX;
+        Counter.areaSizeY = Integer.parseInt(areaSizeY.getText()) / Counter.stepY;
+        Counter.areaSizeZ = Integer.parseInt(areaSizeZ.getText()) / Counter.stepZ;
 
-        Counter.scalefactorX = 1000.0/Counter.stepX;
-        Counter.scalefactorY = 1000.0/Counter.stepY;
-        Counter.scalefactorZ = 1000.0/Counter.stepZ;
+        Counter.scalefactorX = 1000.0 / Counter.stepX;
+        Counter.scalefactorY = 1000.0 / Counter.stepY;
+        Counter.scalefactorZ = 1000.0 / Counter.stepZ;
 
         //Создание первой катушки
-        Point3d firstCoilZero = new Point3d(Double.parseDouble(firstCoilZeroX.getText())/1000,
-                Double.parseDouble(firstCoilZeroY.getText())/1000,
-                Double.parseDouble(firstCoilZeroZ.getText())/1000);
+        Point3d firstCoilZero = new Point3d(Double.parseDouble(firstCoilZeroX.getText()) / 1000,
+                Double.parseDouble(firstCoilZeroY.getText()) / 1000,
+                Double.parseDouble(firstCoilZeroZ.getText()) / 1000);
         Vector3d firstCoilVector = new Vector3d(Double.parseDouble(firstCoilVectorX.getText()),
                 Double.parseDouble(firstCoilVectorY.getText()),
                 Double.parseDouble(firstCoilVectorZ.getText()));
-        Counter.firstCoil = new Coil(firstCoilZero, firstCoilVector, Double.parseDouble(firstCoilRadius.getText())/1000,
-                Double.parseDouble(firstCoilHeight.getText())/1000, Double.parseDouble(firstCoilCurrent.getText()),
+        Counter.firstCoil = new Coil(firstCoilZero, firstCoilVector, Double.parseDouble(firstCoilRadius.getText()) / 1000,
+                Double.parseDouble(firstCoilHeight.getText()) / 1000, Double.parseDouble(firstCoilCurrent.getText()),
                 Double.parseDouble(firstCoilHorizontalLoops.getText()), Double.parseDouble(firstCoilVerticalLoops.getText()));
 
         //Создание второй катушки
-        Point3d secondCoilZero = new Point3d(Double.parseDouble(secondCoilZeroX.getText())/1000,
-                Double.parseDouble(secondCoilZeroY.getText())/1000,
-                Double.parseDouble(secondCoilZeroZ.getText())/1000);
+        Point3d secondCoilZero = new Point3d(Double.parseDouble(secondCoilZeroX.getText()) / 1000,
+                Double.parseDouble(secondCoilZeroY.getText()) / 1000,
+                Double.parseDouble(secondCoilZeroZ.getText()) / 1000);
         Vector3d secondCoilVector = new Vector3d(Double.parseDouble(secondCoilVectorX.getText()),
                 Double.parseDouble(secondCoilVectorY.getText()),
                 Double.parseDouble(secondCoilVectorZ.getText()));
-        Counter.secondCoil = new Coil(secondCoilZero, secondCoilVector, Double.parseDouble(secondCoilRadius.getText())/1000,
-                Double.parseDouble(secondCoilHeight.getText())/1000, Double.parseDouble(secondCoilCurrent.getText()),
+        Counter.secondCoil = new Coil(secondCoilZero, secondCoilVector, Double.parseDouble(secondCoilRadius.getText()) / 1000,
+                Double.parseDouble(secondCoilHeight.getText()) / 1000, Double.parseDouble(secondCoilCurrent.getText()),
                 Double.parseDouble(secondCoilHorizontalLoops.getText()), Double.parseDouble(secondCoilVerticalLoops.getText()));
 
         //Создание третьей катушки
-        Point3d thirdCoilZero = new Point3d(Double.parseDouble(thirdCoilZeroX.getText())/1000,
-                Double.parseDouble(thirdCoilZeroY.getText())/1000,
-                Double.parseDouble(thirdCoilZeroZ.getText())/1000);
+        Point3d thirdCoilZero = new Point3d(Double.parseDouble(thirdCoilZeroX.getText()) / 1000,
+                Double.parseDouble(thirdCoilZeroY.getText()) / 1000,
+                Double.parseDouble(thirdCoilZeroZ.getText()) / 1000);
         Vector3d thirdCoilVector = new Vector3d(Double.parseDouble(thirdCoilVectorX.getText()),
                 Double.parseDouble(thirdCoilVectorY.getText()),
                 Double.parseDouble(thirdCoilVectorZ.getText()));
-        Counter.thirdCoil = new Coil(thirdCoilZero, thirdCoilVector, Double.parseDouble(thirdCoilRadius.getText())/1000,
-                Double.parseDouble(thirdCoilHeight.getText())/1000, Double.parseDouble(thirdCoilCurrent.getText()),
+        Counter.thirdCoil = new Coil(thirdCoilZero, thirdCoilVector, Double.parseDouble(thirdCoilRadius.getText()) / 1000,
+                Double.parseDouble(thirdCoilHeight.getText()) / 1000, Double.parseDouble(thirdCoilCurrent.getText()),
                 Double.parseDouble(thirdCoilHorizontalLoops.getText()), Double.parseDouble(thirdCoilVerticalLoops.getText()));
 
         //Создание четвертой катушки
-        Point3d fourthCoilZero = new Point3d(Double.parseDouble(fourthCoilZeroX.getText())/1000,
-                Double.parseDouble(fourthCoilZeroY.getText())/1000,
-                Double.parseDouble(fourthCoilZeroZ.getText())/1000);
+        Point3d fourthCoilZero = new Point3d(Double.parseDouble(fourthCoilZeroX.getText()) / 1000,
+                Double.parseDouble(fourthCoilZeroY.getText()) / 1000,
+                Double.parseDouble(fourthCoilZeroZ.getText()) / 1000);
         Vector3d fourthCoilVector = new Vector3d(Double.parseDouble(fourthCoilVectorX.getText()),
                 Double.parseDouble(fourthCoilVectorY.getText()),
                 Double.parseDouble(fourthCoilVectorZ.getText()));
-        Counter.fourthCoil = new Coil(fourthCoilZero, fourthCoilVector, Double.parseDouble(fourthCoilRadius.getText())/1000,
-                Double.parseDouble(fourthCoilHeight.getText())/1000, Double.parseDouble(fourthCoilCurrent.getText()),
+        Counter.fourthCoil = new Coil(fourthCoilZero, fourthCoilVector, Double.parseDouble(fourthCoilRadius.getText()) / 1000,
+                Double.parseDouble(fourthCoilHeight.getText()) / 1000, Double.parseDouble(fourthCoilCurrent.getText()),
                 Double.parseDouble(fourthCoilHorizontalLoops.getText()), Double.parseDouble(fourthCoilVerticalLoops.getText()));
 
         //Создание пятой катушки
-        Point3d fifthCoilZero = new Point3d(Double.parseDouble(fifthCoilZeroX.getText())/1000,
-                Double.parseDouble(fifthCoilZeroY.getText())/1000,
-                Double.parseDouble(fifthCoilZeroZ.getText())/1000);
+        Point3d fifthCoilZero = new Point3d(Double.parseDouble(fifthCoilZeroX.getText()) / 1000,
+                Double.parseDouble(fifthCoilZeroY.getText()) / 1000,
+                Double.parseDouble(fifthCoilZeroZ.getText()) / 1000);
         Vector3d fifthCoilVector = new Vector3d(Double.parseDouble(fifthCoilVectorX.getText()),
                 Double.parseDouble(fifthCoilVectorY.getText()),
                 Double.parseDouble(fifthCoilVectorZ.getText()));
-        Counter.fifthCoil = new Coil(fifthCoilZero, fifthCoilVector, Double.parseDouble(fifthCoilRadius.getText())/1000,
-                Double.parseDouble(fifthCoilHeight.getText())/1000, Double.parseDouble(fifthCoilCurrent.getText()),
+        Counter.fifthCoil = new Coil(fifthCoilZero, fifthCoilVector, Double.parseDouble(fifthCoilRadius.getText()) / 1000,
+                Double.parseDouble(fifthCoilHeight.getText()) / 1000, Double.parseDouble(fifthCoilCurrent.getText()),
                 Double.parseDouble(fifthCoilHorizontalLoops.getText()), Double.parseDouble(fifthCoilVerticalLoops.getText()));
 
         //Создание шестой катушки
-        Point3d sixthCoilZero = new Point3d(Double.parseDouble(sixthCoilZeroX.getText())/1000,
-                Double.parseDouble(sixthCoilZeroY.getText())/1000,
-                Double.parseDouble(sixthCoilZeroZ.getText())/1000);
+        Point3d sixthCoilZero = new Point3d(Double.parseDouble(sixthCoilZeroX.getText()) / 1000,
+                Double.parseDouble(sixthCoilZeroY.getText()) / 1000,
+                Double.parseDouble(sixthCoilZeroZ.getText()) / 1000);
         Vector3d sixthCoilVector = new Vector3d(Double.parseDouble(sixthCoilVectorX.getText()),
                 Double.parseDouble(sixthCoilVectorY.getText()),
                 Double.parseDouble(sixthCoilVectorZ.getText()));
-        Counter.thirdCoil = new Coil(sixthCoilZero, sixthCoilVector, Double.parseDouble(sixthCoilRadius.getText())/1000,
-                Double.parseDouble(sixthCoilHeight.getText())/1000, Double.parseDouble(sixthCoilCurrent.getText()),
+        Counter.thirdCoil = new Coil(sixthCoilZero, sixthCoilVector, Double.parseDouble(sixthCoilRadius.getText()) / 1000,
+                Double.parseDouble(sixthCoilHeight.getText()) / 1000, Double.parseDouble(sixthCoilCurrent.getText()),
                 Double.parseDouble(sixthCoilHorizontalLoops.getText()), Double.parseDouble(sixthCoilVerticalLoops.getText()));
 
     }
 
-    public void initPoint(){
-        Counter.globalPoint = new Point3d(Double.parseDouble(pointX.getText())/1000, Double.parseDouble(pointY.getText())/1000, Double.parseDouble(pointZ.getText())/1000);
+    public void initPoint() {
+        Counter.globalPoint = new Point3d(Double.parseDouble(pointX.getText()) / 1000, Double.parseDouble(pointY.getText()) / 1000, Double.parseDouble(pointZ.getText()) / 1000);
     }
 
     public JPanel getMainPanel() {
