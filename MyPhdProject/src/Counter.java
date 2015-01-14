@@ -30,6 +30,7 @@ public class Counter{
     public static Coil fifthCoil = new Coil();
     public static Coil sixthCoil = new Coil();
     public static boolean[] enabledCoils = {false, false, false, false, false, false};
+    public static Coil[] coils = {fifthCoil, secondCoil, thirdCoil, fourthCoil, fifthCoil, sixthCoil};
 
     public static Point3d globalPoint = new Point3d();
     public static Vector3d pointDistribution = new Vector3d();
@@ -37,12 +38,6 @@ public class Counter{
     static double max = 0;
     static double interpolatedMax = 0;
     static double quadricInterpolatedMax = 0;
-
-    public String print(double value){
-        return (!Double.isNaN(value) && !Double.isInfinite(value)
-                    ? BigDecimal.valueOf(value).toPlainString()
-                        : "0");
-    }
 
      static public void initField(){
         fieldDistr = new Vector3d[areaSizeX][areaSizeY][areaSizeZ];
@@ -79,23 +74,10 @@ public class Counter{
 
     static public void countFieldDistribution(){
         initField();
-        if (enabledCoils[0]){
-            countCoilFieldDistr(firstCoil);
-        }
-        if (enabledCoils[1]){
-            countCoilFieldDistr(secondCoil);
-        }
-        if (enabledCoils[2]){
-            countCoilFieldDistr(thirdCoil);
-        }
-        if (enabledCoils[3]){
-            countCoilFieldDistr(fourthCoil);
-        }
-        if (enabledCoils[4]){
-            countCoilFieldDistr(fifthCoil);
-        }
-        if (enabledCoils[5]){
-            countCoilFieldDistr(sixthCoil);
+        for (int i=0; i<coils.length; i++){
+            if (enabledCoils[i]){
+                countCoilFieldDistr(coils[i]);
+            }
         }
     }
 
@@ -124,57 +106,13 @@ public class Counter{
         pointDistribution.add(coil.toGlobal(localField));
     }
 
-    public static void countCoilDistributionInPoint(Coil coil, Point3d point){
-        Point3d localPoint = coil.toLocal(point);
-        Point2d polarPoint = coil.toPolar(localPoint);
-        Vector2d polarField = coil.countCoilB(polarPoint);
-        Vector3d localField = coil.fromPolar(polarField, localPoint);
-        pointDistribution.add(coil.toGlobal(localField));
-    }
-
     public static void countCoilDistributionInPoint(){
         pointDistribution = new Vector3d();
-        if (enabledCoils[0]){
-            countCoilDistributionInPoint(firstCoil);
+        for (int i=0; i<coils.length; i++){
+            if (enabledCoils[i]){
+                countCoilDistributionInPoint(coils[i]);
+            }
         }
-        if (enabledCoils[1]){
-            countCoilDistributionInPoint(secondCoil);
-        }
-        if (enabledCoils[2]){
-            countCoilDistributionInPoint(thirdCoil);
-        }
-        if (enabledCoils[3]){
-            countCoilDistributionInPoint(fourthCoil);
-        }
-        if (enabledCoils[4]){
-            countCoilDistributionInPoint(fifthCoil);
-        }
-        if (enabledCoils[5]){
-            countCoilDistributionInPoint(sixthCoil);
-        }
-    }
-
-    public static Vector3d countCoilDistributionInPoint(Point3d point){
-        pointDistribution = new Vector3d();
-        if (enabledCoils[0]){
-            countCoilDistributionInPoint(firstCoil, point);
-        }
-        if (enabledCoils[1]){
-            countCoilDistributionInPoint(secondCoil, point);
-        }
-        if (enabledCoils[2]){
-            countCoilDistributionInPoint(thirdCoil, point);
-        }
-        if (enabledCoils[3]){
-            countCoilDistributionInPoint(fourthCoil, point);
-        }
-        if (enabledCoils[4]){
-            countCoilDistributionInPoint(fifthCoil, point);
-        }
-        if (enabledCoils[5]){
-            countCoilDistributionInPoint(sixthCoil, point);
-        }
-        return pointDistribution;
     }
 
     static public void countCoilFieldDistr(Coil coil){
