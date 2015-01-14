@@ -9,9 +9,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * User: BKudrin
@@ -125,7 +125,6 @@ public class MainForm {
     private JTextField pointDistributionZ;
     private JButton chooseFileButton;
     private JFileChooser fileChooser;
-    private File selectedFile;
 
     public MainForm() {
 
@@ -359,6 +358,24 @@ public class MainForm {
                 }
             }
         });
+
+       pathToOutputFile.addKeyListener(new KeyAdapter() {
+           @Override
+           public void keyReleased(KeyEvent e) {
+               validateFilePath();
+           }
+       });
+
+       validateFilePath();
+    }
+
+    public void validateFilePath(){
+        try {
+            File file = new File(pathToOutputFile.getText());
+            countFieldDistributionButton.setEnabled(file.exists());
+        } catch (Exception exception){
+            countFieldDistributionButton.setEnabled(false);
+        }
     }
 
 

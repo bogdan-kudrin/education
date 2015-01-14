@@ -11,16 +11,7 @@ import java.awt.event.*;
  * Date: 13.01.2015
  * Time: 21:34
  */
-public class IntegerValidator implements KeyListener {
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
+public class IntegerValidator extends KeyAdapter {
 
     @Override
     public void keyReleased(KeyEvent e) {

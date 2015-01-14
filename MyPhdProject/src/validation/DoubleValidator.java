@@ -2,6 +2,7 @@ package validation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -10,16 +11,7 @@ import java.awt.event.KeyListener;
  * Date: 13.01.2015
  * Time: 21:34
  */
-public class DoubleValidator implements KeyListener {
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
+public class DoubleValidator extends KeyAdapter {
 
     @Override
     public void keyReleased(KeyEvent e) {
