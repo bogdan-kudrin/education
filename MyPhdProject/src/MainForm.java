@@ -10,8 +10,6 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 
 /**
@@ -161,7 +159,7 @@ public class MainForm {
             areaParams[i].addKeyListener(new UnsignedValidator(countFieldDistributionButton));
         }
 
-        for (int i = 0; i < Counter.coils.length; i++) {
+        for (int i = 0; i < BaseCounter.coils.length; i++) {
             for (int j = 0; j < coilDoubleFields[i].length; j++) {
                 coilDoubleFields[i][j].addKeyListener(new DoubleValidator(countFieldDistributionButton));
             }
@@ -174,7 +172,7 @@ public class MainForm {
         pointY.addKeyListener(new DoubleValidator(countFieldDistributionButton));
         pointZ.addKeyListener(new DoubleValidator(countFieldDistributionButton));
 
-        for (int i = 0; i < Counter.coils.length; i++) {
+        for (int i = 0; i < BaseCounter.coils.length; i++) {
             final int localI = i;
             checkBoxes[i].addChangeListener(new ChangeListener() {
                 @Override
@@ -201,9 +199,9 @@ public class MainForm {
                 }
                 if (!hasErrors) {
                     initCoils();
-                    Counter.pathToOutputFile = pathToOutputFile.getText();
-                    SwingCounter swingCounter = new SwingCounter();
-                    swingCounter.execute();
+                    BaseCounter.pathToOutputFile = pathToOutputFile.getText();
+                    SwingBaseCounter swingBaseCounter = new SwingBaseCounter();
+                    swingBaseCounter.execute();
                 }
             }
         });
@@ -215,10 +213,10 @@ public class MainForm {
                 initPoint();
                 countCoilDistributionInPointButton.setEnabled(false);
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                Counter.countCoilDistributionInPoint();
-                pointDistributionX.setText(Double.toString(Counter.pointDistribution.getX()).substring(0, 10));
-                pointDistributionY.setText(Double.toString(Counter.pointDistribution.getY()).substring(0, 10));
-                pointDistributionZ.setText(Double.toString(Counter.pointDistribution.getZ()).substring(0, 10));
+                PointCounter.countCoilDistributionInPoint();
+                pointDistributionX.setText(Double.toString(PointCounter.pointDistribution.getX()).substring(0, 10));
+                pointDistributionY.setText(Double.toString(PointCounter.pointDistribution.getY()).substring(0, 10));
+                pointDistributionZ.setText(Double.toString(PointCounter.pointDistribution.getZ()).substring(0, 10));
                 mainPanel.setCursor(null);
                 countCoilDistributionInPointButton.setEnabled(true);
             }
@@ -256,7 +254,7 @@ public class MainForm {
                 hasErrors = true;
             }
         }
-        for (int i = 0; i < Counter.coils.length; i++) {
+        for (int i = 0; i < BaseCounter.coils.length; i++) {
             if (checkBoxes[i].isSelected()) {
                 for (int j = 0; j < coilDoubleFields[i].length; j++) {
                     if (((BaseValidator) coilDoubleFields[i][j].getKeyListeners()[0]).hasError) {
@@ -286,14 +284,14 @@ public class MainForm {
 
 
     //Вспомогательный класс для проведения вычислений в основном потоке
-    class SwingCounter extends SwingWorker<Void, Void> {
+    class SwingBaseCounter extends SwingWorker<Void, Void> {
         @Override
         public Void doInBackground() {
             countFieldDistributionButton.setEnabled(false);
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            Counter.countAndWriteFieldDistribution();
-            Counter.interpolateAndWriteFieldDistribution();
-            Counter.interpolateQuadricAndWriteFieldDistribution();
+            BaseCounter.countAndWriteFieldDistribution();
+            BaseCounter.interpolateAndWriteFieldDistribution();
+            BaseCounter.interpolateQuadricAndWriteFieldDistribution();
             return null;
         }
 
@@ -305,35 +303,35 @@ public class MainForm {
     }
 
     public void initCoils() {
-        for (int i = 0; i < Counter.enabledCoils.length; i++) {
-            Counter.enabledCoils[i] = checkBoxes[i].isSelected();
+        for (int i = 0; i < BaseCounter.enabledCoils.length; i++) {
+            BaseCounter.enabledCoils[i] = checkBoxes[i].isSelected();
         }
 
         //Установка размеров области
-        Counter.stepX = Integer.parseInt(stepX.getText());
-        Counter.stepY = Integer.parseInt(stepY.getText());
-        Counter.stepZ = Integer.parseInt(stepZ.getText());
+        BaseCounter.stepX = Integer.parseInt(stepX.getText());
+        BaseCounter.stepY = Integer.parseInt(stepY.getText());
+        BaseCounter.stepZ = Integer.parseInt(stepZ.getText());
 
-        Counter.areaSizeX = Integer.parseInt(areaSizeX.getText()) / Counter.stepX;
-        Counter.areaSizeY = Integer.parseInt(areaSizeY.getText()) / Counter.stepY;
-        Counter.areaSizeZ = Integer.parseInt(areaSizeZ.getText()) / Counter.stepZ;
+        BaseCounter.areaSizeX = Integer.parseInt(areaSizeX.getText()) / BaseCounter.stepX;
+        BaseCounter.areaSizeY = Integer.parseInt(areaSizeY.getText()) / BaseCounter.stepY;
+        BaseCounter.areaSizeZ = Integer.parseInt(areaSizeZ.getText()) / BaseCounter.stepZ;
 
-        Counter.scalefactorX = 1000.0 / Counter.stepX;
-        Counter.scalefactorY = 1000.0 / Counter.stepY;
-        Counter.scalefactorZ = 1000.0 / Counter.stepZ;
+        BaseCounter.scalefactorX = 1000.0 / BaseCounter.stepX;
+        BaseCounter.scalefactorY = 1000.0 / BaseCounter.stepY;
+        BaseCounter.scalefactorZ = 1000.0 / BaseCounter.stepZ;
 
-        Point3d[] coilZeros = new Point3d[Counter.enabledCoils.length];
-        Vector3d[] coilVectors = new Vector3d[Counter.enabledCoils.length];
+        Point3d[] coilZeros = new Point3d[BaseCounter.enabledCoils.length];
+        Vector3d[] coilVectors = new Vector3d[BaseCounter.enabledCoils.length];
 
-        for (int i = 0; i < Counter.coils.length; i++) {
-            if (Counter.enabledCoils[i]) {
+        for (int i = 0; i < BaseCounter.coils.length; i++) {
+            if (BaseCounter.enabledCoils[i]) {
                 coilZeros[i] = new Point3d(Double.parseDouble(coilDoubleFields[i][0].getText()) / 1000,
                         Double.parseDouble(coilDoubleFields[i][1].getText()) / 1000,
                         Double.parseDouble(coilDoubleFields[i][2].getText()) / 1000);
                 coilVectors[i] = new Vector3d(Double.parseDouble(coilDoubleFields[i][3].getText()),
                         Double.parseDouble(coilDoubleFields[i][4].getText()),
                         Double.parseDouble(coilDoubleFields[i][5].getText()));
-                Counter.coils[i] = new Coil(coilZeros[i], coilVectors[i], Double.parseDouble(coilUnsignedFields[i][0].getText()) / 1000,
+                BaseCounter.coils[i] = new Coil(coilZeros[i], coilVectors[i], Double.parseDouble(coilUnsignedFields[i][0].getText()) / 1000,
                         Double.parseDouble(coilUnsignedFields[i][1].getText()) / 1000, Double.parseDouble(coilUnsignedFields[i][2].getText()),
                         Double.parseDouble(coilUnsignedFields[i][3].getText()), Double.parseDouble(coilUnsignedFields[i][4].getText()));
 
@@ -342,7 +340,7 @@ public class MainForm {
     }
 
     public void initPoint() {
-        Counter.globalPoint = new Point3d(Double.parseDouble(pointX.getText()) / 1000, Double.parseDouble(pointY.getText()) / 1000, Double.parseDouble(pointZ.getText()) / 1000);
+        PointCounter.globalPoint = new Point3d(Double.parseDouble(pointX.getText()) / 1000, Double.parseDouble(pointY.getText()) / 1000, Double.parseDouble(pointZ.getText()) / 1000);
     }
 
     public JPanel getMainPanel() {

@@ -2,7 +2,6 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
-import java.math.BigDecimal;
 
 /**
  * User: BKudrin
@@ -20,9 +19,9 @@ public class CounterTask implements Runnable {
     }
 
     public void initField(){
-        for (int i=0; i<Counter.areaSizeX; i+=1){
-            for (int j=0; j<Counter.areaSizeY; j+=1){
-                for (int k=0; k<Counter.areaSizeZ; k+=1){
+        for (int i=0; i< BaseCounter.areaSizeX; i+=1){
+            for (int j=0; j< BaseCounter.areaSizeY; j+=1){
+                for (int k=0; k< BaseCounter.areaSizeZ; k+=1){
                     workersFieldDistr[i][j][k] = new Vector3d();
                 }
             }
@@ -30,10 +29,10 @@ public class CounterTask implements Runnable {
     }
 
     public void countCoilFieldDistr(){
-        for (int i=0; i<Counter.areaSizeX; i+=1){
-            for (int j=0; j<Counter.areaSizeY; j+=1){
-                for (int k=0; k<Counter.areaSizeZ; k+=1){
-                    Point3d globalPoint = new Point3d(i/Counter.scalefactorX,j/Counter.scalefactorY,k/Counter.scalefactorZ);
+        for (int i=0; i< BaseCounter.areaSizeX; i+=1){
+            for (int j=0; j< BaseCounter.areaSizeY; j+=1){
+                for (int k=0; k< BaseCounter.areaSizeZ; k+=1){
+                    Point3d globalPoint = new Point3d(i/ BaseCounter.scalefactorX,j/ BaseCounter.scalefactorY,k/ BaseCounter.scalefactorZ);
                     Point3d localPoint = coil.toLocal(globalPoint);
                     Point2d polarPoint = coil.toPolar(localPoint);
                     Vector2d polarField = coil.countCoilB(polarPoint);

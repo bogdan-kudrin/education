@@ -3,11 +3,9 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
 import java.io.*;
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Date;
 
-public class Counter{
+public class BaseCounter {
     static String pathToOutputFile;
     static int areaSizeX = 10;
     static int areaSizeY = 10;
@@ -31,9 +29,6 @@ public class Counter{
     public static Coil sixthCoil = new Coil();
     public static boolean[] enabledCoils = {false, false, false, false, false, false};
     public static Coil[] coils = {firstCoil, secondCoil, thirdCoil, fourthCoil, fifthCoil, sixthCoil};
-
-    public static Point3d globalPoint = new Point3d();
-    public static Vector3d pointDistribution = new Vector3d();
 
     static double max = 0;
     static double interpolatedMax = 0;
@@ -81,7 +76,7 @@ public class Counter{
         }
     }
 
-    public void parallelCountFieldDistribution(){
+    /*public void parallelCountFieldDistribution(){
         Runnable task1 = new CounterTask(fieldDistr, firstCoil);
         Thread worker1 = new Thread(task1);
         if (enabledCoils[0]){
@@ -96,24 +91,7 @@ public class Counter{
         while (worker1.isAlive() || worker2.isAlive()){
 
         }
-    }
-
-    public static void countCoilDistributionInPoint(Coil coil){
-        Point3d localPoint = coil.toLocal(globalPoint);
-        Point2d polarPoint = coil.toPolar(localPoint);
-        Vector2d polarField = coil.countCoilB(polarPoint);
-        Vector3d localField = coil.fromPolar(polarField, localPoint);
-        pointDistribution.add(coil.toGlobal(localField));
-    }
-
-    public static void countCoilDistributionInPoint(){
-        pointDistribution = new Vector3d();
-        for (int i=0; i<coils.length; i++){
-            if (enabledCoils[i]){
-                countCoilDistributionInPoint(coils[i]);
-            }
-        }
-    }
+    }*/
 
     static public void countCoilFieldDistr(Coil coil){
         for (int i=0; i<areaSizeX; i+=1){
@@ -208,10 +186,10 @@ public class Counter{
                     "Cube example\n" +
                     "ASCII\n" +
                     "DATASET STRUCTURED_POINTS\n" +
-                    "DIMENSIONS " + Counter.areaSizeX + " " + Counter.areaSizeY + " " + Counter.areaSizeZ + "\n" +
+                    "DIMENSIONS " + areaSizeX + " " + areaSizeY + " " + areaSizeZ + "\n" +
                     "ORIGIN 0 0 0\n" +
-                    "SPACING " + Counter.stepX + " " + Counter.stepY + " " + Counter.stepZ + "\n" +
-                    "POINT_DATA " + Counter.areaSizeX * Counter.areaSizeY * Counter.areaSizeZ + "\n" +
+                    "SPACING " + stepX + " " + stepY + " " + stepZ + "\n" +
+                    "POINT_DATA " + areaSizeX * areaSizeY * areaSizeZ + "\n" +
                     "VECTORS vectors double\n");
             int f = -1;
             for (int k=0; k<areaSizeZ; k+=1){
@@ -258,10 +236,10 @@ public class Counter{
                     "Cube example\n" +
                     "ASCII\n" +
                     "DATASET STRUCTURED_POINTS\n" +
-                    "DIMENSIONS " + Counter.areaSizeX + " " + Counter.areaSizeY + " " + Counter.areaSizeZ + "\n" +
+                    "DIMENSIONS " + areaSizeX + " " + areaSizeY + " " + areaSizeZ + "\n" +
                     "ORIGIN 0 0 0\n" +
-                    "SPACING " + Counter.stepX + " " + Counter.stepY + " " + Counter.stepZ + "\n" +
-                    "POINT_DATA " + Counter.areaSizeX * Counter.areaSizeY * Counter.areaSizeZ + "\n" +
+                    "SPACING " + stepX + " " + stepY + " " + stepZ + "\n" +
+                    "POINT_DATA " + areaSizeX * areaSizeY * areaSizeZ + "\n" +
                     "VECTORS vectors double\n");
             int f = -1;
             for (int k=0; k<areaSizeZ; k+=1){
@@ -310,10 +288,10 @@ public class Counter{
                     "Cube example\n" +
                     "ASCII\n" +
                     "DATASET STRUCTURED_POINTS\n" +
-                    "DIMENSIONS " + Counter.areaSizeX + " " + Counter.areaSizeY + " " + Counter.areaSizeZ + "\n" +
+                    "DIMENSIONS " + areaSizeX + " " + areaSizeY + " " + areaSizeZ + "\n" +
                     "ORIGIN 0 0 0\n" +
-                    "SPACING " + Counter.stepX + " " + Counter.stepY + " " + Counter.stepZ + "\n" +
-                    "POINT_DATA " + Counter.areaSizeX * Counter.areaSizeY * Counter.areaSizeZ + "\n" +
+                    "SPACING " + stepX + " " + stepY + " " + stepZ + "\n" +
+                    "POINT_DATA " + areaSizeX * areaSizeY * areaSizeZ + "\n" +
                     "VECTORS vectors double\n");
             int f = -1;
             for (int k=0; k<areaSizeZ; k+=1){

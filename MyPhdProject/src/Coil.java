@@ -32,20 +32,6 @@ public class Coil {
         toLocalMatrix.invert(toGlobalMatrix);
     }
 
-    public Coil(Point3d coilZero, Vector3d coilVector){
-        this.coilZero = coilZero;
-        this.zAxis = coilVector;
-        this.zAxis.normalize();
-        this.xAxis.cross(this.zAxis, crossVector);
-        this.xAxis.normalize();
-        this.yAxis.cross(this.zAxis,xAxis);
-        this.yAxis.normalize();
-        toGlobalMatrix.setColumn(0, this.xAxis);
-        toGlobalMatrix.setColumn(1, this.yAxis);
-        toGlobalMatrix.setColumn(2, this.zAxis);
-        toLocalMatrix.invert(toGlobalMatrix);
-    }
-
     public Coil(Point3d coilZero, Vector3d zAxis, double externalRadius, double height, double electricCurrent, double verticalLoops, double horizontalLoops){
         this.coilZero = coilZero;
         this.zAxis = zAxis;
@@ -92,15 +78,6 @@ public class Coil {
         result.setX(point.getX()*scale);
         result.setY(point.getY()*scale);
         result.setZ(vector.getY());
-        return result;
-    }
-
-    public Point3d toGlobal (Point3d point){
-        Point3d result = new Point3d();
-        result.add(coilZero);
-        Transform3D transform = new Transform3D();
-        transform.set(toGlobalMatrix);
-        transform.transform(point, result);
         return result;
     }
 
