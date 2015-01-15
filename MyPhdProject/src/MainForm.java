@@ -1,5 +1,5 @@
+import validation.BaseValidator;
 import validation.DoubleValidator;
-import validation.IntegerValidator;
 import validation.UnsignedValidator;
 
 import javax.swing.*;
@@ -10,9 +10,9 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 /**
  * User: BKudrin
@@ -29,6 +29,11 @@ public class MainForm {
     private JTextField stepX;
     private JTextField stepY;
     private JTextField stepZ;
+
+    private JTextField[] areaParams = {
+            areaSizeX, areaSizeY, areaSizeZ, stepX, stepY, stepZ
+    };
+
 
     //Параметры первой катушки
     private JCheckBox firstCoilCheckBox;
@@ -137,51 +142,50 @@ public class MainForm {
             {sixthCoilRadius, sixthCoilHeight, sixthCoilCurrent, sixthCoilVerticalLoops, sixthCoilHorizontalLoops}
     };
 
-
     private JTextField pointX;
-    private JButton countCoilDistributionInPointButton;
-    private JButton countFieldDistributionButton;
-    private JTextField pathToOutputFile;
     private JTextField pointY;
     private JTextField pointZ;
     private JTextField pointDistributionX;
     private JTextField pointDistributionY;
     private JTextField pointDistributionZ;
+    private JTextField pathToOutputFile;
+    private JButton countFieldDistributionButton;
+    private JButton countCoilDistributionInPointButton;
     private JButton chooseFileButton;
     private JFileChooser fileChooser;
+    private boolean hasErrors = false;
 
     public MainForm() {
 
-        areaSizeX.addKeyListener(new UnsignedValidator());
-        areaSizeY.addKeyListener(new UnsignedValidator());
-        areaSizeZ.addKeyListener(new UnsignedValidator());
-        stepX.addKeyListener(new UnsignedValidator());
-        stepY.addKeyListener(new UnsignedValidator());
-        stepZ.addKeyListener(new UnsignedValidator());
+        for (int i = 0; i < areaParams.length; i++) {
+            areaParams[i].addKeyListener(new UnsignedValidator(countFieldDistributionButton));
+        }
 
-        for (int i = 0; i < coilDoubleFields.length; i++) {
+        for (int i = 0; i < Counter.coils.length; i++) {
             for (int j = 0; j < coilDoubleFields[i].length; j++) {
-                coilDoubleFields[i][j].addKeyListener(new DoubleValidator());
+                coilDoubleFields[i][j].addKeyListener(new DoubleValidator(countFieldDistributionButton));
             }
             for (int j = 0; j < coilUnsignedFields[i].length; j++) {
-                coilUnsignedFields[i][j].addKeyListener(new UnsignedValidator());
+                coilUnsignedFields[i][j].addKeyListener(new UnsignedValidator(countFieldDistributionButton));
             }
         }
 
-        pointX.addKeyListener(new DoubleValidator());
-        pointY.addKeyListener(new DoubleValidator());
-        pointZ.addKeyListener(new DoubleValidator());
+        pointX.addKeyListener(new DoubleValidator(countFieldDistributionButton));
+        pointY.addKeyListener(new DoubleValidator(countFieldDistributionButton));
+        pointZ.addKeyListener(new DoubleValidator(countFieldDistributionButton));
 
-        for (int i = 0; i < checkBoxes.length; i++) {
+        for (int i = 0; i < Counter.coils.length; i++) {
             final int localI = i;
             checkBoxes[i].addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
                     for (int j = 0; j < coilDoubleFields[localI].length; j++) {
                         coilDoubleFields[localI][j].setEnabled(checkBoxes[localI].isSelected());
+                        coilDoubleFields[localI][j].setBackground(checkBoxes[localI].isSelected() ? Color.WHITE : mainPanel.getBackground());
                     }
                     for (int j = 0; j < coilUnsignedFields[localI].length; j++) {
                         coilUnsignedFields[localI][j].setEnabled(checkBoxes[localI].isSelected());
+                        coilUnsignedFields[localI][j].setBackground(checkBoxes[localI].isSelected() ? Color.WHITE : mainPanel.getBackground());
                     }
                 }
             });
@@ -190,15 +194,18 @@ public class MainForm {
         countFieldDistributionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                initCoils();
-                Counter.pathToOutputFile = pathToOutputFile.getText();
-
-                SwingCounter swingCounter = new SwingCounter();
-                swingCounter.execute();
+                validateErrors();
+                validateFilePath();
+                if (pathToOutputFile.getText().isEmpty()){
+                    pathToOutputFile.setBackground(Color.RED);
+                }
+                if (!hasErrors) {
+                    initCoils();
+                    Counter.pathToOutputFile = pathToOutputFile.getText();
+                    SwingCounter swingCounter = new SwingCounter();
+                    swingCounter.execute();
+                }
             }
-
-
         });
 
         countCoilDistributionInPointButton.addActionListener(new ActionListener() {
@@ -240,15 +247,40 @@ public class MainForm {
             }
         });
 
-        validateFilePath();
+    }
+
+    public void validateErrors() {
+        for (int i = 0; i < areaParams.length; i++) {
+            if (((BaseValidator) areaParams[i].getKeyListeners()[0]).hasError) {
+                areaParams[i].setBackground(Color.RED);
+                hasErrors = true;
+            }
+        }
+        for (int i = 0; i < Counter.coils.length; i++) {
+            if (checkBoxes[i].isSelected()) {
+                for (int j = 0; j < coilDoubleFields[i].length; j++) {
+                    if (((BaseValidator) coilDoubleFields[i][j].getKeyListeners()[0]).hasError) {
+                        coilDoubleFields[i][j].setBackground(Color.RED);
+                        hasErrors = true;
+                    }
+                }
+                for (int j = 0; j < coilUnsignedFields[i].length; j++) {
+                    if (((BaseValidator) coilUnsignedFields[i][j].getKeyListeners()[0]).hasError) {
+                        coilUnsignedFields[i][j].setBackground(Color.RED);
+                        hasErrors = true;
+                    }
+                }
+            }
+        }
     }
 
     public void validateFilePath() {
         try {
             File file = new File(pathToOutputFile.getText());
-            countFieldDistributionButton.setEnabled(file.exists());
+            pathToOutputFile.setForeground(file.exists() ? Color.BLACK : Color.RED);
+            pathToOutputFile.setBackground(Color.WHITE);
         } catch (Exception exception) {
-            countFieldDistributionButton.setEnabled(false);
+            pathToOutputFile.setForeground(Color.RED);
         }
     }
 
@@ -290,20 +322,11 @@ public class MainForm {
         Counter.scalefactorY = 1000.0 / Counter.stepY;
         Counter.scalefactorZ = 1000.0 / Counter.stepZ;
 
-        for (int i = 0; i < coilDoubleFields.length; i++) {
-            for (int j = 0; j < coilDoubleFields[i].length; j++) {
-                coilDoubleFields[i][j].addKeyListener(new DoubleValidator());
-            }
-            for (int j = 0; j < coilUnsignedFields[i].length; j++) {
-                coilUnsignedFields[i][j].addKeyListener(new UnsignedValidator());
-            }
-        }
-
         Point3d[] coilZeros = new Point3d[Counter.enabledCoils.length];
         Vector3d[] coilVectors = new Vector3d[Counter.enabledCoils.length];
 
         for (int i = 0; i < Counter.coils.length; i++) {
-            if (Counter.enabledCoils[i]){
+            if (Counter.enabledCoils[i]) {
                 coilZeros[i] = new Point3d(Double.parseDouble(coilDoubleFields[i][0].getText()) / 1000,
                         Double.parseDouble(coilDoubleFields[i][1].getText()) / 1000,
                         Double.parseDouble(coilDoubleFields[i][2].getText()) / 1000);
