@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String args[]) {
 
-        /*try {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
@@ -28,8 +28,8 @@ public class Main {
         tabbedPane.addTab("Интерполяция по результатам эксперимента", null, interpolationPanel,
                 "Does twice as much nothing");
 
-        *//*tabbedPane.addTab("Интерполяция рассчитанных данных", null, interpolationPanel,
-                "Does twice as much nothing");*//*
+        tabbedPane.addTab("Интерполяция рассчитанных данных", null, interpolationPanel,
+                "Does twice as much nothing");
 
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override
@@ -44,10 +44,11 @@ public class Main {
         frame.setContentPane(tabbedPane);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setVisible(true);*/
+        frame.setVisible(true);
 
-        VtkParser.parseFile();
-        VtkParser.writeParsedFieldDistribution();
+       /* VtkParser vtkParser = new VtkParser();
+        vtkParser.parseFile();
+        vtkParser.writeParsedFieldDistribution();*/
 
     }
 

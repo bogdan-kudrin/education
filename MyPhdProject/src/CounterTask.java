@@ -11,6 +11,7 @@ import javax.vecmath.Vector3d;
 public class CounterTask implements Runnable {
     Vector3d[][][] workersFieldDistr;
     Coil coil;
+    BaseCounter baseCounter = new BaseCounter();
 
     CounterTask(Vector3d[][][] workersFieldDistr, Coil coil){
         this.workersFieldDistr = workersFieldDistr;
@@ -19,9 +20,9 @@ public class CounterTask implements Runnable {
     }
 
     public void initField(){
-        for (int i=0; i< BaseCounter.areaSizeX; i+=1){
-            for (int j=0; j< BaseCounter.areaSizeY; j+=1){
-                for (int k=0; k< BaseCounter.areaSizeZ; k+=1){
+        for (int i=0; i< baseCounter.areaSizeX; i+=1){
+            for (int j=0; j< baseCounter.areaSizeY; j+=1){
+                for (int k=0; k< baseCounter.areaSizeZ; k+=1){
                     workersFieldDistr[i][j][k] = new Vector3d();
                 }
             }
@@ -29,10 +30,10 @@ public class CounterTask implements Runnable {
     }
 
     public void countCoilFieldDistr(){
-        for (int i=0; i< BaseCounter.areaSizeX; i+=1){
-            for (int j=0; j< BaseCounter.areaSizeY; j+=1){
-                for (int k=0; k< BaseCounter.areaSizeZ; k+=1){
-                    Point3d globalPoint = new Point3d(i/ BaseCounter.scalefactorX,j/ BaseCounter.scalefactorY,k/ BaseCounter.scalefactorZ);
+        for (int i=0; i< baseCounter.areaSizeX; i+=1){
+            for (int j=0; j< baseCounter.areaSizeY; j+=1){
+                for (int k=0; k< baseCounter.areaSizeZ; k+=1){
+                    Point3d globalPoint = new Point3d(i/ baseCounter.scalefactorX,j/ baseCounter.scalefactorY,k/ baseCounter.scalefactorZ);
                     Point3d localPoint = coil.toLocal(globalPoint);
                     Point2d polarPoint = coil.toPolar(localPoint);
                     Vector2d polarField = coil.countCoilB(polarPoint);

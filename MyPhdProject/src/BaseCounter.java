@@ -6,35 +6,35 @@ import java.io.*;
 import java.util.Date;
 
 public class BaseCounter {
-    static String pathToOutputFile;
-    static int areaSizeX = 10;
-    static int areaSizeY = 10;
-    static int areaSizeZ = 10;
-    static int stepX = 1;
-    static int stepY = 1;
-    static int stepZ = 1;
-    static  double scalefactorX = 1000.0/stepX;
-    static  double scalefactorY = 1000.0/stepY;
-    static  double scalefactorZ = 1000.0/stepZ;
+    String pathToOutputFile;
+    int areaSizeX = 10;
+    int areaSizeY = 10;
+    int areaSizeZ = 10;
+    int stepX = 1;
+    int stepY = 1;
+    int stepZ = 1;
+    double scalefactorX = 1000.0/stepX;
+    double scalefactorY = 1000.0/stepY;
+    double scalefactorZ = 1000.0/stepZ;
 
-    static Vector3d[][][] fieldDistr;
-    static Vector3d[][][] interpolatedFieldDistr;
-    static Vector3d[][][] quadricInterpolatedFieldDistr;
+    Vector3d[][][] fieldDistr;
+    Vector3d[][][] interpolatedFieldDistr;
+    Vector3d[][][] quadricInterpolatedFieldDistr;
 
-    public static Coil firstCoil = new Coil();
-    public static Coil secondCoil = new Coil();
-    public static Coil thirdCoil = new Coil();
-    public static Coil fourthCoil = new Coil();
-    public static Coil fifthCoil = new Coil();
-    public static Coil sixthCoil = new Coil();
-    public static boolean[] enabledCoils = {false, false, false, false, false, false};
-    public static Coil[] coils = {firstCoil, secondCoil, thirdCoil, fourthCoil, fifthCoil, sixthCoil};
+    public Coil firstCoil = new Coil();
+    public Coil secondCoil = new Coil();
+    public Coil thirdCoil = new Coil();
+    public Coil fourthCoil = new Coil();
+    public Coil fifthCoil = new Coil();
+    public Coil sixthCoil = new Coil();
+    public boolean[] enabledCoils = {false, false, false, false, false, false};
+    public Coil[] coils = {firstCoil, secondCoil, thirdCoil, fourthCoil, fifthCoil, sixthCoil};
 
-    static double max = 0;
-    static double interpolatedMax = 0;
-    static double quadricInterpolatedMax = 0;
+    double max = 0;
+    double interpolatedMax = 0;
+    double quadricInterpolatedMax = 0;
 
-     static public void initField(){
+     public void initField(){
         fieldDistr = new Vector3d[areaSizeX][areaSizeY][areaSizeZ];
         for (int i=0; i<areaSizeX; i+=1){
             for (int j=0; j<areaSizeY; j+=1){
@@ -45,7 +45,7 @@ public class BaseCounter {
         }
     }
 
-    static public void initInterpolatedField(){
+    public void initInterpolatedField(){
         interpolatedFieldDistr = new Vector3d[areaSizeX][areaSizeY][areaSizeZ];
         for (int i=0; i<areaSizeX; i+=1){
             for (int j=0; j<areaSizeY; j+=1){
@@ -56,7 +56,7 @@ public class BaseCounter {
         }
     }
 
-    static public void initQuaricInterpolatedField(){
+    public void initQuaricInterpolatedField(){
         quadricInterpolatedFieldDistr = new Vector3d[areaSizeX][areaSizeY][areaSizeZ];
         for (int i=0; i<areaSizeX; i+=1){
             for (int j=0; j<areaSizeY; j+=1){
@@ -67,7 +67,7 @@ public class BaseCounter {
         }
     }
 
-    static public void countFieldDistribution(){
+    public void countFieldDistribution(){
         initField();
         for (int i=0; i< coils.length; i++){
             if (enabledCoils[i]){
@@ -93,7 +93,7 @@ public class BaseCounter {
         }
     }*/
 
-    static public void countCoilFieldDistr(Coil coil){
+    public void countCoilFieldDistr(Coil coil){
         for (int i=0; i<areaSizeX; i+=1){
             for (int j=0; j<areaSizeY; j+=1){
                 for (int k=0; k<areaSizeZ; k+=1){
@@ -112,7 +112,7 @@ public class BaseCounter {
         }
     }
 
-    static public void interpolateFieldDistrLinear(){
+    public void interpolateFieldDistrLinear(){
         initInterpolatedField();
         Interpolator interpolator = new Interpolator();
         for (int i=0; i<areaSizeX - 1; i+=1){
@@ -145,7 +145,7 @@ public class BaseCounter {
 
     }
 
-    static public void interpolateFieldDistrQuadric(){
+    public void interpolateFieldDistrQuadric(){
         initQuaricInterpolatedField();
         Interpolator interpolator = new Interpolator();
         double interpolationPoint = new Vector3d(0.5/scalefactorX, 0.5/scalefactorY, 0.5/scalefactorZ).length();
@@ -174,7 +174,7 @@ public class BaseCounter {
 
     }
 
-    public static void countAndWriteFieldDistribution(){
+    public void countAndWriteFieldDistribution(){
         Date startDate = new Date();
         try {
             File file = new File(pathToOutputFile);
@@ -223,7 +223,7 @@ public class BaseCounter {
         }
     }
 
-    public static void interpolateAndWriteFieldDistribution(){
+    public void interpolateAndWriteFieldDistribution(){
         Date startDate = new Date();
         try {
             File file = new File(pathToOutputFile.replaceAll("vtkField", "vtkFieldInterpolated"));
@@ -275,7 +275,7 @@ public class BaseCounter {
         }
     }
 
-    public static void interpolateQuadricAndWriteFieldDistribution(){
+    public void interpolateQuadricAndWriteFieldDistribution(){
         Date startDate = new Date();
         try {
             File file = new File(pathToOutputFile.replaceAll("vtkField", "vtkFieldInterpolatedQuadric"));
@@ -327,7 +327,7 @@ public class BaseCounter {
         }
     }
 
-    public static int getIndex(int i, int j){
+    public int getIndex(int i, int j){
         return (j == 0 ? i : i + j);
     }
 

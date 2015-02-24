@@ -10,8 +10,9 @@ import java.util.Scanner;
  */
 public class VtkParser {
 
-    public static void parseFile() {
-        Date startDate = new Date();
+    BaseCounter baseCounter = new BaseCounter();
+    
+    public void parseFile() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("C:\\magneticFieldFiles\\vtkField.vtk"));
             String line = br.readLine();
@@ -24,9 +25,9 @@ public class VtkParser {
 
             String[] lineStrParams = line.split(" ");
 
-            BaseCounter.areaSizeX = Integer.parseInt(lineStrParams[1]);
-            BaseCounter.areaSizeY = Integer.parseInt(lineStrParams[2]);
-            BaseCounter.areaSizeZ = Integer.parseInt(lineStrParams[3]);
+            baseCounter.areaSizeX = Integer.parseInt(lineStrParams[1]);
+            baseCounter.areaSizeY = Integer.parseInt(lineStrParams[2]);
+            baseCounter.areaSizeZ = Integer.parseInt(lineStrParams[3]);
 
             while (lineCounter < 7) {
                 lineCounter++;
@@ -35,26 +36,26 @@ public class VtkParser {
 
             lineStrParams = line.split(" ");
 
-            BaseCounter.stepX = Integer.parseInt(lineStrParams[1]);
-            BaseCounter.stepY = Integer.parseInt(lineStrParams[2]);
-            BaseCounter.stepZ = Integer.parseInt(lineStrParams[3]);
+            baseCounter.stepX = Integer.parseInt(lineStrParams[1]);
+            baseCounter.stepY = Integer.parseInt(lineStrParams[2]);
+            baseCounter.stepZ = Integer.parseInt(lineStrParams[3]);
 
-            BaseCounter.scalefactorX = 1000.0 / BaseCounter.stepX;
-            BaseCounter.scalefactorY = 1000.0 / BaseCounter.stepY;
-            BaseCounter.scalefactorZ = 1000.0 / BaseCounter.stepZ;
+            baseCounter.scalefactorX = 1000.0 / baseCounter.stepX;
+            baseCounter.scalefactorY = 1000.0 / baseCounter.stepY;
+            baseCounter.scalefactorZ = 1000.0 / baseCounter.stepZ;
 
             while (lineCounter < 9) {
                 lineCounter++;
-                line = br.readLine();
+                br.readLine();
             }
 
             Scanner s = new Scanner(br);
-            BaseCounter.initField();
+            baseCounter.initField();
 
-            for (int k = 0; k < BaseCounter.areaSizeZ; k += 1) {
-                for (int j = 0; j < BaseCounter.areaSizeY; j += 1) {
-                    for (int i = 0; i < BaseCounter.areaSizeX; i += 1) {
-                        BaseCounter.fieldDistr[i][j][k] = new Vector3d(Double.parseDouble(s.next()), Double.parseDouble(s.next()), Double.parseDouble(s.next()));
+            for (int k = 0; k < baseCounter.areaSizeZ; k += 1) {
+                for (int j = 0; j < baseCounter.areaSizeY; j += 1) {
+                    for (int i = 0; i < baseCounter.areaSizeX; i += 1) {
+                        baseCounter.fieldDistr[i][j][k] = new Vector3d(Double.parseDouble(s.next()), Double.parseDouble(s.next()), Double.parseDouble(s.next()));
                     }
                 }
             }
@@ -64,7 +65,7 @@ public class VtkParser {
         }
     }
 
-    public static void writeParsedFieldDistribution() {
+    public void writeParsedFieldDistribution() {
         try {
             File file = new File("C:\\magneticFieldFiles\\vtkFieldParseTest.vtk");
             file.getParentFile().mkdirs();
@@ -74,16 +75,16 @@ public class VtkParser {
                     "Cube example\n" +
                     "ASCII\n" +
                     "DATASET STRUCTURED_POINTS\n" +
-                    "DIMENSIONS " + BaseCounter.areaSizeX + " " + BaseCounter.areaSizeY + " " + BaseCounter.areaSizeZ + "\n" +
+                    "DIMENSIONS " + baseCounter.areaSizeX + " " + baseCounter.areaSizeY + " " + baseCounter.areaSizeZ + "\n" +
                     "ORIGIN 0 0 0\n" +
-                    "SPACING " + BaseCounter.stepX + " " + BaseCounter.stepY + " " + BaseCounter.stepZ + "\n" +
-                    "POINT_DATA " + BaseCounter.areaSizeX * BaseCounter.areaSizeY * BaseCounter.areaSizeZ + "\n" +
+                    "SPACING " + baseCounter.stepX + " " + baseCounter.stepY + " " + baseCounter.stepZ + "\n" +
+                    "POINT_DATA " + baseCounter.areaSizeX * baseCounter.areaSizeY * baseCounter.areaSizeZ + "\n" +
                     "VECTORS vectors double\n");
             int f = -1;
-            for (int k = 0; k < BaseCounter.areaSizeZ; k += 1) {
-                for (int j = 0; j < BaseCounter.areaSizeY; j += 1) {
-                    for (int i = 0; i < BaseCounter.areaSizeX; i += 1) {
-                        Vector3d value = BaseCounter.fieldDistr[i][j][k];
+            for (int k = 0; k < baseCounter.areaSizeZ; k += 1) {
+                for (int j = 0; j < baseCounter.areaSizeY; j += 1) {
+                    for (int i = 0; i < baseCounter.areaSizeX; i += 1) {
+                        Vector3d value = baseCounter.fieldDistr[i][j][k];
                         f++;
                         if (f == 5) {
                             f = 0;
