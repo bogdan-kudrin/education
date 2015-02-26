@@ -70,11 +70,9 @@ public class MainForm3 {
         interpolateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*validateInputFilePath();
-                validateOutputFilePath();*/
+                validateInputFilePath();
+                validateOutputFilePath();
                 if (!hasErrors) {
-                    /*vtkParser.parseFile(inputFilePath.getText());
-                    vtkParser.baseCounter.interpolateAndWriteFieldDistribution(outputFilePath.getText());*/
                     SwingCounter swingCounter = new SwingCounter();
                     swingCounter.execute();
                 }
@@ -103,7 +101,7 @@ public class MainForm3 {
             interpolateButton.setEnabled(false);
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             vtkParser.parseFile(inputFilePath.getText());
-            vtkParser.baseCounter.interpolateAndWriteFieldDistribution();
+            vtkParser.baseCounter.interpolateAndWriteFieldDistribution(outputFilePath.getText());
             return null;
         }
 
@@ -121,7 +119,7 @@ public class MainForm3 {
     public void validateInputFilePath() {
         try {
             File file = new File(inputFilePath.getText());
-            hasErrors = file.exists();
+            hasErrors = !file.exists();
             inputFilePath.setForeground(file.exists() ? Color.BLACK : Color.RED);
             inputFilePath.setBackground(Color.WHITE);
         } catch (Exception exception) {
@@ -133,7 +131,7 @@ public class MainForm3 {
     public void validateOutputFilePath() {
         try {
             File file = new File(outputFilePath.getText());
-            hasErrors = file.exists();
+            hasErrors = !file.exists();
             outputFilePath.setForeground(file.exists() ? Color.BLACK : Color.RED);
             outputFilePath.setBackground(Color.WHITE);
         } catch (Exception exception) {

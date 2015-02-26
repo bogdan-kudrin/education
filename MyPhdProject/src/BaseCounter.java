@@ -138,7 +138,7 @@ public class BaseCounter {
                     for (int l=0; l<2; l+=1){
                         for (int m=0; m<2; m+=1){
                             for (int n=0; n<2; n+=1){
-                                Point3d interpolationPoint = new Point3d(((double)i+(double)l*0.5)/scalefactorX, ((double)j+(double)m*0.5)/scalefactorY, ((double)k+(double)m*0.5)/scalefactorZ);
+                                Point3d interpolationPoint = new Point3d((((double)i)+((double)l)*0.5)/scalefactorX, (((double)j)+((double)m)*0.5)/scalefactorY, (((double)k)+((double)m)*0.5)/scalefactorZ);
                                 interpolatedFieldDistr[getIndex(i*2,l)][getIndex(j*2,m)][getIndex(k*2,n)].setX(interpolator.interpolateLinear(interpolationNodes, interpolationValuesX, interpolationPoint));
                                 interpolatedFieldDistr[getIndex(i*2,l)][getIndex(j*2,m)][getIndex(k*2,n)].setY(interpolator.interpolateLinear(interpolationNodes, interpolationValuesY, interpolationPoint));
                                 interpolatedFieldDistr[getIndex(i*2,l)][getIndex(j*2,m)][getIndex(k*2,n)].setZ(interpolator.interpolateLinear(interpolationNodes, interpolationValuesZ, interpolationPoint));
@@ -233,9 +233,9 @@ public class BaseCounter {
         }
     }
 
-    public void interpolateAndWriteFieldDistribution(){
+    public void interpolateAndWriteFieldDistribution(String pathToOutputFile){
         try {
-            File file = new File(pathToOutputFile.replaceAll("vtkField", "vtkFieldInterpolated"));
+            File file = new File(pathToOutputFile);
             file.getParentFile().mkdirs();
             BufferedWriter vtkFieldWriter = new BufferedWriter(new FileWriter(file));
 
