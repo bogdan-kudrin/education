@@ -12,9 +12,9 @@ public class VtkParser {
 
     BaseCounter baseCounter = new BaseCounter();
     
-    public void parseFile() {
+    public void parseFile(String pathToFile) {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("C:\\magneticFieldFiles\\vtkField.vtk"));
+            BufferedReader br = new BufferedReader(new FileReader(pathToFile));
             String line = br.readLine();
             int lineCounter = 1;
 
@@ -64,44 +64,4 @@ public class VtkParser {
             e.printStackTrace();
         }
     }
-
-    public void writeParsedFieldDistribution() {
-        try {
-            File file = new File("C:\\magneticFieldFiles\\vtkFieldParseTest.vtk");
-            file.getParentFile().mkdirs();
-            BufferedWriter vtkFieldWriter = new BufferedWriter(new FileWriter(file));
-
-            vtkFieldWriter.write("# vtk DataFile Version 2.0\n" +
-                    "Cube example\n" +
-                    "ASCII\n" +
-                    "DATASET STRUCTURED_POINTS\n" +
-                    "DIMENSIONS " + baseCounter.areaSizeX + " " + baseCounter.areaSizeY + " " + baseCounter.areaSizeZ + "\n" +
-                    "ORIGIN 0 0 0\n" +
-                    "SPACING " + baseCounter.stepX + " " + baseCounter.stepY + " " + baseCounter.stepZ + "\n" +
-                    "POINT_DATA " + baseCounter.areaSizeX * baseCounter.areaSizeY * baseCounter.areaSizeZ + "\n" +
-                    "VECTORS vectors double\n");
-            int f = -1;
-            for (int k = 0; k < baseCounter.areaSizeZ; k += 1) {
-                for (int j = 0; j < baseCounter.areaSizeY; j += 1) {
-                    for (int i = 0; i < baseCounter.areaSizeX; i += 1) {
-                        Vector3d value = baseCounter.fieldDistr[i][j][k];
-                        f++;
-                        if (f == 5) {
-                            f = 0;
-                            vtkFieldWriter.write("\n");
-                        }
-                        vtkFieldWriter.write(value.x + " " +
-                                value.y + " " +
-                                value.z + '\u0009');
-                    }
-                }
-            }
-
-            vtkFieldWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

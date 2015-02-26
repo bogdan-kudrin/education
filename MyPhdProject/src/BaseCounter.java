@@ -46,10 +46,10 @@ public class BaseCounter {
     }
 
     public void initInterpolatedField(){
-        interpolatedFieldDistr = new Vector3d[areaSizeX][areaSizeY][areaSizeZ];
-        for (int i=0; i<areaSizeX; i+=1){
-            for (int j=0; j<areaSizeY; j+=1){
-                for (int k=0; k<areaSizeZ; k+=1){
+        interpolatedFieldDistr = new Vector3d[areaSizeX*2 -1][areaSizeY*2 -1][areaSizeZ*2 -1];
+        for (int i=0; i<areaSizeX*2 -1; i+=1){
+            for (int j=0; j<areaSizeY*2 -1; j+=1){
+                for (int k=0; k<areaSizeZ*2 -1; k+=1){
                     interpolatedFieldDistr[i][j][k] = new Vector3d();
                 }
             }
@@ -118,7 +118,7 @@ public class BaseCounter {
         for (int i=0; i<areaSizeX - 1; i+=1){
             for (int j=0; j<areaSizeY - 1; j+=1){
                 for (int k=0; k<areaSizeZ - 1; k+=1){
-                    Point3d interpolationPoint = new Point3d((i + 0.5)/scalefactorX, (j + 0.5)/scalefactorY, (k + 0.5)/scalefactorZ);
+                    //Point3d interpolationPoint = new Point3d((i + 0.5)/scalefactorX, (j + 0.5)/scalefactorY, (k + 0.5)/scalefactorZ);
                     Point3d[][][] interpolationNodes = new Point3d[2][2][2];
                     double[][][] interpolationValuesX = new double[2][2][2];
                     double[][][] interpolationValuesY = new double[2][2][2];
@@ -135,9 +135,19 @@ public class BaseCounter {
 
                     }
 
-                    interpolatedFieldDistr[i][j][k].setX(interpolator.interpolateLinear(interpolationNodes, interpolationValuesX, interpolationPoint));
-                    interpolatedFieldDistr[i][j][k].setY(interpolator.interpolateLinear(interpolationNodes, interpolationValuesY, interpolationPoint));
-                    interpolatedFieldDistr[i][j][k].setZ(interpolator.interpolateLinear(interpolationNodes, interpolationValuesZ, interpolationPoint));
+                    for (int l=0; l<2; l+=1){
+                        for (int m=0; m<2; m+=1){
+                            for (int n=0; n<2; n+=1){
+                                Point3d interpolationPoint = new Point3d(((double)i+(double)l*0.5)/scalefactorX, ((double)j+(double)m*0.5)/scalefactorY, ((double)k+(double)m*0.5)/scalefactorZ);
+                                interpolatedFieldDistr[getIndex(i*2,l)][getIndex(j*2,m)][getIndex(k*2,n)].setX(interpolator.interpolateLinear(interpolationNodes, interpolationValuesX, interpolationPoint));
+                                interpolatedFieldDistr[getIndex(i*2,l)][getIndex(j*2,m)][getIndex(k*2,n)].setY(interpolator.interpolateLinear(interpolationNodes, interpolationValuesY, interpolationPoint));
+                                interpolatedFieldDistr[getIndex(i*2,l)][getIndex(j*2,m)][getIndex(k*2,n)].setZ(interpolator.interpolateLinear(interpolationNodes, interpolationValuesZ, interpolationPoint));
+                            }
+                        }
+
+                    }
+
+
                 }
             }
 
@@ -224,7 +234,6 @@ public class BaseCounter {
     }
 
     public void interpolateAndWriteFieldDistribution(){
-        Date startDate = new Date();
         try {
             File file = new File(pathToOutputFile.replaceAll("vtkField", "vtkFieldInterpolated"));
             file.getParentFile().mkdirs();
@@ -236,19 +245,16 @@ public class BaseCounter {
                     "Cube example\n" +
                     "ASCII\n" +
                     "DATASET STRUCTURED_POINTS\n" +
-                    "DIMENSIONS " + areaSizeX + " " + areaSizeY + " " + areaSizeZ + "\n" +
+                    "DIMENSIONS " + (areaSizeX*2 - 1) + " " + (areaSizeY*2 - 1) + " " + (areaSizeZ*2 - 1) + "\n" +
                     "ORIGIN 0 0 0\n" +
-                    "SPACING " + stepX + " " + stepY + " " + stepZ + "\n" +
-                    "POINT_DATA " + areaSizeX * areaSizeY * areaSizeZ + "\n" +
+                    "SPACING " + stepX/2 + " " + stepY/2 + " " + stepZ/2 + "\n" +
+                    "POINT_DATA " + (areaSizeX*2 - 1) * (areaSizeY*2 - 1) * (areaSizeZ*2 - 1) + "\n" +
                     "VECTORS vectors double\n");
             int f = -1;
-            for (int k=0; k<areaSizeZ; k+=1){
-                for (int j=0; j<areaSizeY; j+=1){
-                    for (int i=0; i<areaSizeX; i+=1){
+            for (int k=0; k<(areaSizeZ*2 - 1); k+=1){
+                for (int j=0; j<(areaSizeY*2 - 1); j+=1){
+                    for (int i=0; i<(areaSizeX*2 - 1); i+=1){
                         Vector3d value = interpolatedFieldDistr[i][j][k];
-                        if (value.length() > interpolatedMax){
-                            interpolatedMax = value.length();
-                        }
                         f++;
                         if (f==5) {
                             f=0;
@@ -263,11 +269,6 @@ public class BaseCounter {
             }
 
             vtkFieldWriter.close();
-            Date stopDate = new Date();
-            Long timeDiff = stopDate.getTime() - startDate.getTime();
-            System.out.println(timeDiff/1000 + " sec");
-            System.out.println(interpolatedMax/max);
-
         }
         catch (IOException e)
         {
@@ -330,6 +331,5 @@ public class BaseCounter {
     public int getIndex(int i, int j){
         return (j == 0 ? i : i + j);
     }
-
 
 }

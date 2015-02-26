@@ -22,14 +22,15 @@ public class Main {
         final JTabbedPane tabbedPane = new JTabbedPane();
         JPanel countPanel = new MainForm().getMainPanel();
         JPanel interpolationPanel = new MainForm2().getMainPanel();
+        JPanel interpolateCountedValuesPanel = new MainForm3().getMainPanel();
         tabbedPane.addTab("Расчет", null, countPanel,
-                "Does nothing");
+                "Интерполяция по результатам эксперимента");
 
         tabbedPane.addTab("Интерполяция по результатам эксперимента", null, interpolationPanel,
-                "Does twice as much nothing");
+                "Интерполяция по результатам эксперимента");
 
-        tabbedPane.addTab("Интерполяция рассчитанных данных", null, interpolationPanel,
-                "Does twice as much nothing");
+        tabbedPane.addTab("Интерполяция рассчитанных данных", null, interpolateCountedValuesPanel,
+                "Интерполяция рассчитанных данных");
 
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override

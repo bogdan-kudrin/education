@@ -203,8 +203,8 @@ public class MainForm {
                 if (!hasErrors) {
                     initCoils();
                     baseCounter.pathToOutputFile = pathToOutputFile.getText();
-                    SwingbaseCounter swingbaseCounter = new SwingbaseCounter();
-                    swingbaseCounter.execute();
+                    SwingCounter swingCounter = new SwingCounter();
+                    swingCounter.execute();
                 }
             }
         });
@@ -287,14 +287,14 @@ public class MainForm {
 
 
     //Вспомогательный класс для проведения вычислений в основном потоке
-    class SwingbaseCounter extends SwingWorker<Void, Void> {
+    class SwingCounter extends SwingWorker<Void, Void> {
         @Override
         public Void doInBackground() {
             countFieldDistributionButton.setEnabled(false);
             mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             baseCounter.countAndWriteFieldDistribution();
-            baseCounter.interpolateAndWriteFieldDistribution();
-            baseCounter.interpolateQuadricAndWriteFieldDistribution();
+           /* baseCounter.interpolateAndWriteFieldDistribution();
+            baseCounter.interpolateQuadricAndWriteFieldDistribution();*/
             return null;
         }
 
