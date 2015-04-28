@@ -22,7 +22,7 @@ public class UnsignedValidator extends BaseValidator {
         JTextField source = (JTextField) e.getSource();
         source.setBackground(Color.WHITE);
         try  {
-            Integer.parseUnsignedInt(source.getText());
+            Integer.parseInt(source.getText());
             source.setForeground(Color.BLACK);
             this.hasError = false;
             this.button.setEnabled(true);
@@ -32,5 +32,3 @@ public class UnsignedValidator extends BaseValidator {
         }
     }
 }
-
-

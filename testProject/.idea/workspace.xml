@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2daf10ff-c378-45cc-b6bd-900ed55d474c" name="Default" comment="" />
+    <list default="true" id="2daf10ff-c378-45cc-b6bd-900ed55d474c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/company/CustomNumber.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/company/CustomWriter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MyPhdProject/src/META-INF/MANIFEST.MF" afterPath="$PROJECT_DIR$/../MyPhdProject/src/META-INF/MANIFEST.MF" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MyPhdProject/src/MainForm3.form" afterPath="$PROJECT_DIR$/../MyPhdProject/src/MainForm3.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MyPhdProject/MyPhdProject.iml" afterPath="$PROJECT_DIR$/../MyPhdProject/MyPhdProject.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/TestApp.java" afterPath="$PROJECT_DIR$/src/com/company/TestApp.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/TestAppMain.java" afterPath="$PROJECT_DIR$/src/com/company/TestAppMain.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MyPhdProject/src/validation/UnsignedValidator.java" afterPath="$PROJECT_DIR$/../MyPhdProject/src/validation/UnsignedValidator.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MyPhdProject/.idea/misc.xml" afterPath="$PROJECT_DIR$/../MyPhdProject/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../MyPhdProject/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../MyPhdProject/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="testProject.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,22 +36,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TestAppMain.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TestAppMain.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/TestAppMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.437018" vertical-offset="0" max-vertical-offset="493">
-              <caret line="11" column="47" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestApp.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CustomNumber.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/company/CustomNumber.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
+              <caret line="13" column="37" selection-start-line="13" selection-start-column="37" selection-end-line="13" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestApp.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/TestApp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
-              <caret line="4" column="40" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-              <folding />
+            <state vertical-scroll-proportion="0.12596402" vertical-offset="2" max-vertical-offset="442">
+              <caret line="3" column="61" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding>
+                <element signature="e#136#150#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CustomWriter.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/company/CustomWriter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="155" max-vertical-offset="663">
+              <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -50,13 +87,17 @@
       <setting name="OPEN_NEW_TAB" value="true" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/company/Pair.java" />
         <option value="$PROJECT_DIR$/src/com/company/Main.java" />
-        <option value="$PROJECT_DIR$/src/com/company/TestApp.java" />
         <option value="$PROJECT_DIR$/src/com/company/TestAppMain.java" />
+        <option value="$PROJECT_DIR$/src/com/company/Pair.java" />
+        <option value="$PROJECT_DIR$/src/com/company/TestApp.java" />
+        <option value="$PROJECT_DIR$/src/com/company/CustomWriter.java" />
       </list>
     </option>
   </component>
@@ -66,7 +107,7 @@
     <option name="width" value="1292" />
     <option name="height" value="776" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -148,6 +189,12 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="dynamic.classpath" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -274,12 +321,12 @@
       <created>1430225263916</created>
       <updated>1430225263916</updated>
       <workItem from="1430225266581" duration="12000" />
-      <workItem from="1430225279967" duration="921000" />
+      <workItem from="1430225279967" duration="4703000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="933000" />
+    <option name="totallyTimeSpent" value="4715000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1289" y="34" width="1292" height="776" extended-state="0" />
@@ -330,19 +377,39 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/company/TestApp.java">
+    <entry file="file://$PROJECT_DIR$/src/com/company/TestAppMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
-          <caret line="4" column="40" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/company/TestAppMain.java">
+    <entry file="file://$PROJECT_DIR$/src/com/company/CustomWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.437018" vertical-offset="0" max-vertical-offset="493">
-          <caret line="11" column="47" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="155" max-vertical-offset="663">
+          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/CustomNumber.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
+          <caret line="13" column="37" selection-start-line="13" selection-start-column="37" selection-end-line="13" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/TestApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12596402" vertical-offset="2" max-vertical-offset="442">
+          <caret line="3" column="61" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding>
+            <element signature="e#136#150#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

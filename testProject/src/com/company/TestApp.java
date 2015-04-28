@@ -2,16 +2,19 @@
 package com.company;
 
 
-public class TestApp {
-private int[] sq;
+import java.util.ArrayList;
 
-   public void PrintSq(int x) { 
-            System.out.printf("Квадраты чисел до числа %d: ", x);
-           for (int i=1; i<=x; i++) {
-               
-              
-               System.out.printf("%d, ",i*i);
-               
+public class TestApp {
+   public ArrayList<CustomNumber> savedQuads = new ArrayList<CustomNumber>();
+
+   public void printSequence(int limit) {
+           System.out.printf("Квадраты чисел до числа %d: ", limit);
+           for (int i=1; i <= limit; i++) {
+               int quad = i*i;
+               savedQuads.add(new CustomNumber(quad));
+               System.out.printf("%d, ", quad);
            }
-   }   
+   }
+
+
 }
